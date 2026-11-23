@@ -1794,5 +1794,158 @@
       }
     })();
   </script>
+
+  <script>
+    /* CTA click → Google Apps Script email (damart.seo@gmail.com)
+       1) Deploy apps-script/Code.gs as a Web app (Anyone)
+       2) Paste the Web app URL below */
+    (function () {
+      var CTA_TRACKER_URL = "PASTE_APPS_SCRIPT_WEB_APP_URL_HERE";
+
+      if (!CTA_TRACKER_URL || CTA_TRACKER_URL.indexOf("http") !== 0) return;
+
+      var ATTR_KEYS = [
+        "gclid", "gbraid", "wbraid", "dclid", "fbclid", "msclkid", "ttclid",
+        "li_fat_id", "twclid", "utm_source", "utm_medium", "utm_campaign",
+        "utm_term", "utm_content", "utm_id", "campaignid", "adgroupid",
+        "creative", "keyword", "device", "network", "matchtype", "placement"
+      ];
+      var STORAGE_KEY = "udi_cta_attr_v1";
+      var FIRST_KEY = "udi_cta_first_v1";
+
+      function pickAttrs(search) {
+        var params = new URLSearchParams(search || window.location.search);
+        var out = {};
+        ATTR_KEYS.forEach(function (key) {
+          var val = params.get(key);
+          if (val) out[key] = val;
+        });
+        return out;
+      }
+
+      function readJson(key, store) {
+        try {
+          var raw = store.getItem(key);
+          return raw ? JSON.parse(raw) : null;
+        } catch (err) {
+          return null;
+        }
+      }
+
+      function writeJson(key, store, value) {
+        try {
+          store.setItem(key, JSON.stringify(value));
+        } catch (err) { /* private mode / quota */ }
+      }
+
+      function mergeAttrs(base, next) {
+        var out = Object.assign({}, base || {});
+        Object.keys(next || {}).forEach(function (key) {
+          if (next[key]) out[key] = next[key];
+        });
+        return out;
+      }
+
+      var incoming = pickAttrs();
+      var sessionAttr = mergeAttrs(readJson(STORAGE_KEY, sessionStorage), incoming);
+      if (document.referrer) sessionAttr.referrer = document.referrer;
+      sessionAttr.landingPage = sessionAttr.landingPage || window.location.href;
+      writeJson(STORAGE_KEY, sessionStorage, sessionAttr);
+
+      var firstTouch = readJson(FIRST_KEY, localStorage);
+      if (!firstTouch) {
+        firstTouch = Object.assign({}, sessionAttr, {
+          firstSeenAt: new Date().toISOString(),
+          landingPage: window.location.href
+        });
+        writeJson(FIRST_KEY, localStorage, firstTouch);
+      }
+
+      function classifyCta(el) {
+        var href = (el.getAttribute("href") || "").toLowerCase();
+        var label = (el.getAttribute("aria-label") || el.textContent || "").replace(/\s+/g, " ").trim();
+        if (el.classList.contains("urgency-bar")) {
+          return { ctaType: "urgency_bar", ctaLabel: "Bottom urgency ticker" };
+        }
+        if (el.classList.contains("float-btn--seat")) {
+          return { ctaType: "float_claim_seat", ctaLabel: label || "Claim free seat" };
+        }
+        if (el.classList.contains("float-btn--wa") || href.indexOf("wa.me") !== -1 || href.indexOf("whatsapp") !== -1) {
+          return { ctaType: "whatsapp", ctaLabel: label || "WhatsApp" };
+        }
+        if (href.indexOf("docs.google.com/forms") !== -1) {
+          if (el.classList.contains("nav__cta")) return { ctaType: "nav_register", ctaLabel: label || "Nav reserve seat" };
+          if (el.classList.contains("btn--primary")) return { ctaType: "register_form", ctaLabel: label || "Register form" };
+          return { ctaType: "register_form", ctaLabel: label || "Google Form" };
+        }
+        return { ctaType: "cta", ctaLabel: label || "CTA" };
+      }
+
+      function isTrackedLink(el) {
+        if (!el || el.tagName !== "A") return false;
+        var href = (el.getAttribute("href") || "").toLowerCase();
+        if (!href || href.charAt(0) === "#") return false;
+        return (
+          href.indexOf("docs.google.com/forms") !== -1 ||
+          href.indexOf("wa.me") !== -1 ||
+          href.indexOf("whatsapp") !== -1 ||
+          el.classList.contains("urgency-bar") ||
+          el.classList.contains("float-btn--seat") ||
+          el.classList.contains("float-btn--wa") ||
+          el.classList.contains("nav__cta")
+        );
+      }
+
+      function buildPayload(el) {
+        var meta = classifyCta(el);
+        var attrNow = mergeAttrs(readJson(STORAGE_KEY, sessionStorage), pickAttrs());
+        return {
+          event: "cta_click",
+          ctaType: meta.ctaType,
+          ctaLabel: meta.ctaLabel,
+          href: el.href || el.getAttribute("href") || "",
+          pageUrl: window.location.href,
+          timestamp: new Date().toISOString(),
+          attribution: attrNow,
+          firstTouch: readJson(FIRST_KEY, localStorage) || {},
+          tech: {
+            userAgent: navigator.userAgent,
+            language: navigator.language || "",
+            platform: navigator.platform || "",
+            timezone: (Intl.DateTimeFormat().resolvedOptions().timeZone) || "",
+            screen: (window.screen && (window.screen.width + "x" + window.screen.height)) || "",
+            viewport: window.innerWidth + "x" + window.innerHeight
+          }
+        };
+      }
+
+      function sendClick(payload) {
+        var body = JSON.stringify(payload);
+        try {
+          if (navigator.sendBeacon) {
+            var blob = new Blob([body], { type: "text/plain;charset=UTF-8" });
+            if (navigator.sendBeacon(CTA_TRACKER_URL, blob)) return;
+          }
+        } catch (err) { /* fall through */ }
+
+        try {
+          fetch(CTA_TRACKER_URL, {
+            method: "POST",
+            mode: "no-cors",
+            keepalive: true,
+            headers: { "Content-Type": "text/plain;charset=UTF-8" },
+            body: body
+          });
+        } catch (err2) { /* ignore */ }
+      }
+
+      document.addEventListener("click", function (event) {
+        var el = event.target;
+        while (el && el !== document && el.tagName !== "A") el = el.parentElement;
+        if (!isTrackedLink(el)) return;
+        sendClick(buildPayload(el));
+      }, true);
+    })();
+  </script>
 </body>
 </html>

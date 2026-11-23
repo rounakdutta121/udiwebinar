@@ -1,0 +1,17 @@
+UDI Webinar CTA email tracker — setup
+
+1. Open https://script.google.com and create a new project.
+2. Paste everything from Code.gs into the editor. Save.
+3. Deploy → New deployment → Web app
+   - Execute as: Me
+   - Who has access: Anyone
+4. Authorize the script when prompted (allow Gmail/MailApp).
+5. Copy the Web app URL.
+6. In index.html (and public/index.html), replace:
+     PASTE_APPS_SCRIPT_WEB_APP_URL_HERE
+   with your Web app URL.
+7. Optional: in the Apps Script editor, run sendTestEmail() once to confirm
+   mail arrives at damart.seo@gmail.com.
+
+Tracked clicks: Google Form CTAs, WhatsApp links, urgency bar, float claim-seat.
+Each email includes gclid / gbraid / wbraid / fbclid / msclkid / UTMs and first-touch data when present.
