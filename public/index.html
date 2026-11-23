@@ -743,16 +743,19 @@
       background: #25d366; color: #fff;
     }
     .float-btn--seat {
-      background: var(--ink); color: var(--teal-bright);
+      width: 54px; height: 54px;
+      background: var(--ink); color: #fff;
       border-color: rgba(46,196,182,0.5);
-      position: relative;
+      text-align: center;
+      padding: 0.35rem;
+      line-height: 1.05;
+      font-size: 0.58rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
     }
     .float-btn--seat:hover {
       background: var(--teal-bright); color: var(--ink);
-    }
-    .float-btn--seat span {
-      position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
-      overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
     }
     .float-btn--top {
       background: #fff; color: var(--ink);
@@ -1579,15 +1582,7 @@
       rel="noopener noreferrer"
       aria-label="Claim your free seat"
       title="Claim your free seat"
-    >
-      <span>Claim your free seat</span>
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
-        <path d="M4 8h16v11H4z"/>
-        <path d="M8 8V6.5A2.5 2.5 0 0110.5 4h3A2.5 2.5 0 0116 6.5V8"/>
-        <path d="M4 13h16"/>
-        <path d="M9 16h6"/>
-      </svg>
-    </a>
+    >Claim<br />free<br />seat</a>
   </div>
 
   <script>
