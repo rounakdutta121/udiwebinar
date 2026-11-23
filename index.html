@@ -1,0 +1,1999 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Understanding UDI — Live Webinar | MedDevices Lifesciences</title>
+  <meta name="description" content="Join MedDevices Lifesciences for Understanding UDI — a practical 90-minute webinar for medical device professionals. 28 November, 11:00 AM–12:30 PM on LinkedIn + Zoom." />
+  <meta property="og:title" content="Understanding UDI | MedDevices Webinar" />
+  <meta property="og:description" content="A practical guide to Unique Device Identification for regulatory, QA, and manufacturing teams. Free live webinar — 28 November." />
+  <meta property="og:image" content="public/images/hero-udi-atmosphere.jpg" />
+  <link rel="icon" type="image/png" href="public/brand/meddevices-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.17/dist/lenis.min.js"></script>
+  <style>
+    :root {
+      --ink: #07161d;
+      --navy: #0b2430;
+      --slate: #163643;
+      --mist: #e7f1ef;
+      --fog: #f4f8f7;
+      --teal: #1f9e96;
+      --teal-bright: #2ec4b6;
+      --teal-deep: #0f6e68;
+      --cream: #dce9e6;
+      --muted: #6e8790;
+      --line: rgba(255, 255, 255, 0.12);
+      --line-dark: rgba(7, 22, 29, 0.1);
+      --radius: 2px;
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+      --font-display: "Fraunces", Georgia, serif;
+      --font-body: "Sora", system-ui, sans-serif;
+      --max: 1180px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: auto; }
+    html.lenis, html.lenis body { height: auto; }
+    .lenis.lenis-smooth { scroll-behavior: auto !important; }
+    .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+    .lenis.lenis-stopped { overflow: hidden; }
+
+    body {
+      font-family: var(--font-body);
+      color: var(--ink);
+      background: var(--fog);
+      line-height: 1.6;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      padding-left: env(safe-area-inset-left);
+      padding-right: env(safe-area-inset-right);
+    }
+
+    img { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; }
+    button, input, select, textarea { font: inherit; }
+    ul { list-style: none; }
+
+    .container { width: min(100% - 2.5rem, var(--max)); margin-inline: auto; }
+    .container-wide { width: min(100% - 2.5rem, 1320px); margin-inline: auto; }
+
+    .sr-only {
+      position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+      overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+    }
+
+    /* ——— Nav ——— */
+    .nav {
+      position: fixed; inset: 0 0 auto; z-index: 100;
+      transition: background 0.4s var(--ease), backdrop-filter 0.4s, border-color 0.4s;
+      border-bottom: 1px solid transparent;
+    }
+    .nav.scrolled {
+      background: rgba(7, 22, 29, 0.88);
+      backdrop-filter: blur(16px);
+      border-bottom-color: var(--line);
+    }
+    .nav__inner {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 1rem; padding: 1rem 0; width: min(100% - 2.5rem, var(--max)); margin-inline: auto;
+    }
+    .nav__logo {
+      display: inline-flex; align-items: center;
+      padding: 0.4rem 0.65rem; background: #fff;
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 12px;
+    }
+    .nav__logo img { height: 36px; width: auto; display: block; }
+    .nav__links { display: flex; align-items: center; gap: 1.75rem; }
+    .nav__links a {
+      color: rgba(255,255,255,0.78); font-size: 0.82rem; font-weight: 500;
+      letter-spacing: 0.02em; transition: color 0.25s;
+    }
+    .nav__links a:hover, .nav__links a:focus-visible { color: #fff; }
+    .nav__cta {
+      display: inline-flex; align-items: center; justify-content: center;
+      padding: 0.7rem 1.15rem; background: var(--teal-bright); color: var(--ink) !important;
+      font-weight: 600; font-size: 0.8rem; border-radius: var(--radius);
+      transition: transform 0.25s var(--ease), background 0.25s;
+    }
+    .nav__cta:hover { background: #fff; transform: translateY(-1px); }
+    .nav__toggle {
+      display: none; width: 44px; height: 44px; border: 1px solid var(--line);
+      background: transparent; color: #fff; cursor: pointer; border-radius: var(--radius);
+    }
+    .nav__toggle span {
+      display: block; width: 18px; height: 2px; margin: 4px auto; background: currentColor;
+      transition: transform 0.3s, opacity 0.3s;
+    }
+
+    /* ——— Buttons ——— */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 0.55rem;
+      padding: 1rem 1.6rem; border: none; border-radius: var(--radius); cursor: pointer;
+      font-weight: 600; font-size: 0.92rem; letter-spacing: 0.01em;
+      transition: transform 0.3s var(--ease), background 0.3s, color 0.3s, box-shadow 0.3s;
+    }
+    .btn:focus-visible { outline: 2px solid var(--teal-bright); outline-offset: 3px; }
+    .btn--primary { background: var(--teal-bright); color: var(--ink); }
+    .btn--primary:hover { background: #fff; transform: translateY(-2px); box-shadow: 0 18px 40px rgba(46,196,182,0.25); }
+    .btn--ghost {
+      background: transparent; color: #fff; border: 1px solid rgba(255,255,255,0.28);
+    }
+    .btn--ghost:hover { border-color: #fff; background: rgba(255,255,255,0.06); }
+    .btn--dark { background: var(--ink); color: #fff; }
+    .btn--dark:hover { background: var(--teal-deep); transform: translateY(-2px); }
+
+    /* ——— Hero ——— */
+    .hero {
+      position: relative; min-height: 100svh; display: grid; place-items: center start;
+      color: #fff; overflow: hidden; background: var(--ink);
+    }
+    .hero__media {
+      position: absolute; inset: 0; z-index: 0;
+    }
+    .hero__slide {
+      position: absolute; inset: 0; opacity: 0;
+      transition: opacity 1.4s var(--ease);
+      will-change: opacity, transform;
+    }
+    .hero__slide.is-active { opacity: 1; z-index: 1; }
+    .hero__slide picture,
+    .hero__slide img {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      display: block;
+    }
+    .hero__slide img {
+      object-fit: cover; object-position: 72% center;
+      transform: scale(1.03); filter: saturate(0.92) contrast(1.02);
+      transition: transform 7s linear;
+    }
+    .hero__slide.is-active img { transform: scale(1.08); }
+    /* Full-bleed photo; soft left shade only for type contrast — image still visible */
+    .hero__overlay {
+      position: absolute; inset: 0; z-index: 2;
+      background:
+        linear-gradient(
+          90deg,
+          rgba(7, 22, 29, 0.78) 0%,
+          rgba(7, 22, 29, 0.62) 28%,
+          rgba(7, 22, 29, 0.38) 48%,
+          rgba(7, 22, 29, 0.18) 68%,
+          rgba(7, 22, 29, 0.28) 100%
+        ),
+        linear-gradient(
+          180deg,
+          rgba(7, 22, 29, 0.35) 0%,
+          rgba(7, 22, 29, 0.15) 40%,
+          rgba(7, 22, 29, 0.72) 100%
+        );
+      pointer-events: none;
+    }
+    @media (max-width: 900px) {
+      .hero__overlay {
+        background:
+          linear-gradient(180deg, rgba(7,22,29,0.55) 0%, rgba(7,22,29,0.4) 45%, rgba(7,22,29,0.88) 100%),
+          linear-gradient(90deg, rgba(7,22,29,0.7) 0%, rgba(7,22,29,0.35) 55%, rgba(7,22,29,0.25) 100%);
+      }
+      .hero__slide img { object-position: center center; }
+    }
+    .hero__carousel-nav {
+      position: absolute; left: max(1.25rem, calc((100vw - var(--max)) / 2));
+      bottom: 2rem; z-index: 3; display: flex; align-items: center; gap: 0.55rem;
+    }
+    .hero__carousel-dot {
+      width: 28px; height: 2px; border: none; padding: 0; cursor: pointer;
+      background: rgba(255,255,255,0.28); transition: background 0.35s, width 0.35s;
+    }
+    .hero__carousel-dot.is-active {
+      width: 42px; background: var(--teal-bright);
+    }
+    .hero__carousel-dot:focus-visible { outline: 2px solid var(--teal-bright); outline-offset: 3px; }
+    .hero__carousel-label {
+      margin-left: 0.65rem; font-size: 0.68rem; letter-spacing: 0.14em;
+      text-transform: uppercase; color: rgba(255,255,255,0.55); font-weight: 500;
+    }
+    .hero__content {
+      position: relative; z-index: 4; padding: 6.5rem 0 5rem;
+      width: min(100% - 2.5rem, var(--max)); margin-inline: auto;
+      align-self: center; justify-self: stretch;
+    }
+    .hero__eyebrow {
+      display: inline-flex; align-items: center; gap: 0.75rem;
+      margin-bottom: 1.4rem; padding: 0.65rem 1.15rem;
+      font-size: 0.76rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase;
+      color: #062018;
+      background: linear-gradient(120deg, #ffe08a 0%, #f4c15d 100%);
+      border: 1px solid rgba(255, 224, 138, 0.9);
+      box-shadow: 0 10px 28px rgba(244, 193, 93, 0.28), inset 0 1px 0 rgba(255,255,255,0.45);
+    }
+    .hero__eyebrow::before {
+      content: ""; width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
+      background: #e23d2d; box-shadow: 0 0 0 0 rgba(226, 61, 45, 0.55);
+      animation: live-dot 1.5s ease-out infinite;
+    }
+    @keyframes live-dot {
+      0% { box-shadow: 0 0 0 0 rgba(226, 61, 45, 0.55); }
+      70% { box-shadow: 0 0 0 8px rgba(226, 61, 45, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(226, 61, 45, 0); }
+    }
+    .hero h1 {
+      font-family: var(--font-display); font-weight: 500; font-size: clamp(2.6rem, 6.5vw, 5.2rem);
+      line-height: 1.05; letter-spacing: -0.02em; max-width: 14ch; margin-bottom: 1.25rem;
+    }
+    .hero h1 em {
+      font-style: italic; color: var(--teal-bright); font-weight: 400;
+    }
+    .hero__lead {
+      font-size: clamp(1rem, 1.6vw, 1.2rem); font-weight: 300; color: rgba(255,255,255,0.78);
+      max-width: 38rem; margin-bottom: 2rem;
+    }
+    .hero__meta {
+      display: flex; flex-wrap: wrap; gap: 0.85rem; margin-bottom: 2.5rem;
+    }
+    .hero__meta-item {
+      --accent: var(--teal-bright);
+      --accent-soft: rgba(46,196,182,0.16);
+      --accent-border: rgba(46,196,182,0.4);
+      display: inline-flex; align-items: center; gap: 0.85rem;
+      min-width: min(100%, 210px); padding: 0.9rem 1.1rem;
+      color: #fff;
+      background: linear-gradient(160deg, rgba(18,52,67,0.78), rgba(7,22,29,0.58));
+      border: 1px solid var(--accent-border);
+      border-left: 3px solid var(--accent);
+      backdrop-filter: blur(14px);
+      box-shadow: 0 14px 30px rgba(0,0,0,0.18);
+      transition: border-color 0.3s, background 0.3s, transform 0.3s var(--ease);
+    }
+    .hero__meta-item--date {
+      --accent: #2ec4b6;
+      --accent-soft: rgba(46,196,182,0.18);
+      --accent-border: rgba(46,196,182,0.45);
+    }
+    .hero__meta-item--time {
+      --accent: #f4c15d;
+      --accent-soft: rgba(244,193,93,0.16);
+      --accent-border: rgba(244,193,93,0.42);
+    }
+    .hero__meta-item--platform {
+      --accent: #6eb6ff;
+      --accent-soft: rgba(110,182,255,0.16);
+      --accent-border: rgba(110,182,255,0.42);
+    }
+    .hero__meta-item:hover {
+      transform: translateY(-2px);
+      background: linear-gradient(160deg, var(--accent-soft), rgba(7,22,29,0.65));
+    }
+    .hero__meta-icon {
+      display: grid; place-items: center; width: 40px; height: 40px; flex-shrink: 0;
+      color: var(--accent);
+      background: var(--accent-soft);
+      border: 1px solid var(--accent-border);
+    }
+    .hero__meta-icon svg {
+      width: 20px; height: 20px; display: block;
+      stroke: currentColor; fill: none; stroke-width: 1.7;
+    }
+    .hero__meta-copy { display: grid; gap: 0.2rem; }
+    .hero__meta-copy strong {
+      font-size: 0.68rem; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--accent);
+    }
+    .hero__meta-copy b {
+      font-size: 0.95rem; font-weight: 600; color: #fff; letter-spacing: 0.01em;
+    }
+    .hero__actions { display: flex; flex-wrap: wrap; gap: 0.85rem; }
+
+    .hero__scroll {
+      position: absolute; right: max(1.25rem, calc((100vw - var(--max)) / 2));
+      bottom: 2rem; z-index: 2; writing-mode: vertical-rl; transform: rotate(180deg);
+      font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase;
+      color: rgba(255,255,255,0.55); display: flex; align-items: center; gap: 0.75rem;
+    }
+    .hero__scroll::after {
+      content: ""; width: 1px; height: 48px; background: linear-gradient(to bottom, rgba(255,255,255,0.5), transparent);
+      animation: pulse-line 2s ease infinite;
+    }
+    @keyframes pulse-line {
+      0%, 100% { opacity: 0.35; transform: scaleY(0.7); transform-origin: top; }
+      50% { opacity: 1; transform: scaleY(1); }
+    }
+
+    /* ——— Shared sections ——— */
+    .section { padding: clamp(4.5rem, 9vw, 7.5rem) 0; position: relative; overflow: hidden; }
+    .section--dark { background: var(--navy); color: #fff; }
+    .section--mist { background: var(--mist); }
+    .section--fog { background: var(--fog); }
+    .section > .container { position: relative; z-index: 1; }
+
+    /* Background icon decorations (all sections except hero) */
+    .section-decor {
+      position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
+    }
+    .section-decor__item {
+      position: absolute; opacity: 0.11; color: var(--teal-deep);
+    }
+    .section-decor__item svg {
+      width: 100%; height: 100%; display: block; stroke: currentColor; fill: none; stroke-width: 1.35;
+    }
+    .section--dark .section-decor__item,
+    .cta-band .section-decor__item {
+      color: var(--teal-bright); opacity: 0.14;
+    }
+    .section--mist .section-decor__item { opacity: 0.13; color: #0f6e68; }
+    .section-decor__item--a { width: 120px; height: 120px; top: 8%; right: 4%; }
+    .section-decor__item--b { width: 88px; height: 88px; bottom: 12%; left: 3%; }
+    .section-decor__item--c { width: 64px; height: 64px; top: 42%; left: 8%; opacity: 0.08; }
+    .section-decor__item--d { width: 100px; height: 100px; bottom: 18%; right: 10%; opacity: 0.09; }
+    .section--dark .section-decor__item--c,
+    .cta-band .section-decor__item--c { opacity: 0.1; }
+    .section--dark .section-decor__item--d,
+    .cta-band .section-decor__item--d { opacity: 0.11; }
+    .cta-band .section-decor { z-index: 2; }
+    @media (max-width: 900px) {
+      .section-decor__item--a { width: 84px; height: 84px; right: 2%; }
+      .section-decor__item--b { width: 64px; height: 64px; }
+      .section-decor__item--c { display: none; }
+      .section-decor__item--d { width: 72px; height: 72px; right: 4%; }
+    }
+
+    .kicker {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      font-size: 0.75rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--teal-deep); margin-bottom: 1rem;
+    }
+    .section--dark .kicker { color: var(--teal-bright); }
+    .kicker::before { content: ""; width: 22px; height: 1px; background: currentColor; }
+
+    .display {
+      font-family: var(--font-display); font-weight: 500;
+      font-size: clamp(2rem, 4.2vw, 3.4rem); line-height: 1.12; letter-spacing: -0.02em;
+      margin-bottom: 1.1rem;
+    }
+    .lede { font-size: 1.05rem; color: var(--muted); max-width: 40rem; font-weight: 300; }
+    .section--dark .lede { color: rgba(255,255,255,0.68); }
+
+    .section-head {
+      text-align: center; max-width: 46rem; margin: 0 auto 2.75rem;
+    }
+    .section-head .kicker { justify-content: center; }
+    .section-head .display { margin-inline: auto; }
+    .section-head .lede { margin-inline: auto; }
+    .section-head .agenda__hint {
+      margin: 0.85rem auto 0; text-align: center; max-width: 34rem;
+    }
+
+    /* ——— Stakes ——— */
+    .stakes__grid {
+      display: grid; grid-template-columns: 1.05fr 0.95fr; gap: clamp(2rem, 5vw, 4rem);
+      align-items: center; margin-top: 3rem;
+    }
+    .stakes__visual {
+      position: relative; overflow: hidden; border-radius: var(--radius); aspect-ratio: 4/3;
+      background: var(--slate);
+    }
+    .stakes__visual img { width: 100%; height: 100%; object-fit: cover; }
+    .stakes__caption {
+      position: absolute; left: 1rem; right: 1rem; bottom: 1rem;
+      padding: 0.85rem 1rem; background: rgba(7,22,29,0.78); backdrop-filter: blur(10px);
+      color: #fff; font-size: 0.82rem; border: 1px solid var(--line);
+    }
+    .stakes__points { display: grid; gap: 1.35rem; margin-top: 2rem; }
+    .stakes__point {
+      display: grid; grid-template-columns: auto 1fr; gap: 1rem; align-items: start;
+      padding-bottom: 1.35rem; border-bottom: 1px solid var(--line-dark);
+    }
+    .stakes__point:last-child { border-bottom: 0; padding-bottom: 0; }
+    .stakes__num {
+      font-family: var(--font-display); font-size: 1.4rem; color: var(--teal);
+      font-style: italic; line-height: 1; padding-top: 0.15rem;
+    }
+    .stakes__point h3 { font-size: 1.05rem; font-weight: 600; margin-bottom: 0.35rem; }
+    .stakes__point p { color: var(--muted); font-size: 0.95rem; font-weight: 300; }
+
+    /* ——— Audience ——— */
+    .audience__head { max-width: 46rem; }
+    .audience__rail {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .audience__item {
+      background: var(--navy); padding: 1.75rem 1.5rem; min-height: 160px;
+      display: flex; flex-direction: column; justify-content: space-between; gap: 1.5rem;
+      transition: background 0.35s var(--ease);
+    }
+    .audience__item:hover { background: #123443; }
+    .audience__item svg { width: 28px; height: 28px; color: var(--teal-bright); }
+    .audience__item h3 { font-size: 1.05rem; font-weight: 500; line-height: 1.35; }
+    .audience__item span {
+      font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.45);
+    }
+
+    /* ——— Agenda clock ——— */
+    .agenda__intro { margin-bottom: 2.5rem; }
+    .agenda__hint { font-size: 0.92rem; color: var(--muted); font-weight: 300; }
+
+    .clock-scene {
+      position: relative;
+      width: 100vw;
+      margin-left: calc(50% - 50vw);
+      margin-right: calc(50% - 50vw);
+    }
+    .clock-scene__sticky {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      box-sizing: border-box;
+      width: 100%;
+      height: 100svh;
+      min-height: 100svh;
+      padding: calc(5.75rem + env(safe-area-inset-top, 0px)) 1.25rem 2.5rem;
+    }
+    .clock-layout {
+      display: grid; grid-template-columns: minmax(260px, 400px) minmax(280px, 1fr);
+      gap: clamp(1.5rem, 4vw, 3.5rem); align-items: center;
+      width: min(100%, var(--max));
+      margin-inline: auto;
+    }
+
+    .clock-stage { display: flex; flex-direction: column; align-items: center; gap: 1.25rem; }
+    .clock {
+      position: relative; width: min(100%, 360px); aspect-ratio: 1;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 50% 50%, #123844 0%, var(--navy) 62%, #06141b 100%);
+      border: 1px solid rgba(46, 196, 182, 0.35);
+      box-shadow:
+        0 0 0 10px rgba(7, 22, 29, 0.06),
+        0 30px 60px rgba(7, 22, 29, 0.18),
+        inset 0 0 40px rgba(46, 196, 182, 0.08);
+    }
+    .clock__ring {
+      position: absolute; inset: 18%; border-radius: 50%;
+      border: 1px dashed rgba(46, 196, 182, 0.18); pointer-events: none; z-index: 1;
+    }
+    .clock__ticks { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
+    .clock__tick {
+      position: absolute; left: 50%; top: 50%; width: 2px; height: 50%;
+      transform-origin: center bottom; margin-left: -1px; margin-top: -50%;
+    }
+    .clock__tick::after {
+      content: ""; position: absolute; top: 4.5%; left: 50%; width: 1.5px; height: 5px;
+      transform: translateX(-50%); background: rgba(255,255,255,0.28); border-radius: 1px;
+    }
+    .clock__tick--major::after {
+      height: 10px; width: 2.5px; top: 3.8%; background: rgba(46,196,182,0.85);
+    }
+
+    .clock__hours, .clock__mins {
+      position: absolute; inset: 0; z-index: 2; pointer-events: none;
+    }
+    .clock__hour-num, .clock__min-num {
+      position: absolute; left: 50%; top: 50%;
+      transform: translate(-50%, -50%);
+      font-variant-numeric: tabular-nums; line-height: 1; text-align: center;
+    }
+    .clock__hour-num {
+      font-family: var(--font-display); font-size: clamp(0.95rem, 2.8vw, 1.2rem);
+      font-weight: 500; color: rgba(255,255,255,0.92); width: 1.4em;
+    }
+    .clock__min-num {
+      font-family: var(--font-body); font-size: clamp(0.48rem, 1.5vw, 0.58rem);
+      font-weight: 500; letter-spacing: 0.02em; color: rgba(46,196,182,0.9);
+      width: 1.6em;
+    }
+
+    .clock__markers { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
+    .clock__marker {
+      position: absolute; left: 50%; top: 50%; width: 10px; height: 50%;
+      transform-origin: center bottom; margin-left: -5px; margin-top: -50%;
+    }
+    .clock__marker span {
+      position: absolute; top: 1.5%; left: 50%; width: 8px; height: 8px;
+      transform: translateX(-50%); border-radius: 50%;
+      background: rgba(255,255,255,0.2); border: 1.5px solid rgba(46,196,182,0.7);
+      transition: background 0.35s, box-shadow 0.35s, transform 0.35s;
+    }
+    .clock__marker.is-active span {
+      background: var(--teal-bright); border-color: #fff;
+      box-shadow: 0 0 0 4px rgba(46,196,182,0.25); transform: translateX(-50%) scale(1.2);
+    }
+
+    .clock__hand {
+      position: absolute; left: 50%; bottom: 50%; transform-origin: center bottom;
+      border-radius: 999px; will-change: transform; transform: rotate(0deg); z-index: 4;
+    }
+    .clock__hand--hour {
+      width: 5px; height: 24%; margin-left: -2.5px;
+      background: linear-gradient(to top, #fff, var(--teal-bright));
+    }
+    .clock__hand--minute {
+      width: 3px; height: 34%; margin-left: -1.5px;
+      background: linear-gradient(to top, rgba(255,255,255,0.55), #fff);
+    }
+    .clock__center {
+      position: absolute; left: 50%; top: 50%; width: 14px; height: 14px;
+      margin: -7px 0 0 -7px; border-radius: 50%; background: var(--teal-bright);
+      box-shadow: 0 0 0 4px rgba(7,22,29,0.85); z-index: 5;
+    }
+    .clock__label {
+      position: absolute; left: 50%; top: 58%; transform: translate(-50%, -50%);
+      font-size: 0.58rem; letter-spacing: 0.18em; text-transform: uppercase;
+      color: rgba(255,255,255,0.4); font-weight: 500; z-index: 2;
+    }
+
+    .clock__digital {
+      font-family: var(--font-display); font-size: clamp(2rem, 4vw, 2.6rem);
+      font-variant-numeric: tabular-nums; color: var(--ink); letter-spacing: -0.02em;
+      line-height: 1;
+    }
+    .clock__digital small {
+      display: block; margin-top: 0.35rem; font-family: var(--font-body);
+      font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--muted); font-weight: 500;
+    }
+    .clock__dots {
+      display: flex; gap: 0.45rem; flex-wrap: wrap; justify-content: center;
+    }
+    .clock__dot {
+      width: 8px; height: 8px; border-radius: 50%; border: none; padding: 0;
+      background: rgba(7,22,29,0.15); cursor: pointer; transition: background 0.3s, transform 0.3s;
+    }
+    .clock__dot.is-active { background: var(--teal); transform: scale(1.35); }
+    .clock__dot:focus-visible { outline: 2px solid var(--teal); outline-offset: 3px; }
+
+    .clock-panel {
+      position: relative; min-height: 0;
+      width: 100%; max-width: 100%; box-sizing: border-box;
+      background: #fff; border: 1px solid var(--line-dark);
+      padding: clamp(1.5rem, 3vw, 2.35rem);
+      box-shadow: 0 20px 50px rgba(7,22,29,0.06);
+      overflow: hidden;
+    }
+    .clock-panel__step {
+      position: absolute; left: 0; right: 0; top: 0;
+      padding: clamp(1.5rem, 3vw, 2.35rem);
+      box-sizing: border-box; width: 100%;
+      opacity: 0; visibility: hidden; pointer-events: none;
+      transform: translateY(14px);
+      transition: opacity 0.45s var(--ease), transform 0.45s var(--ease), visibility 0.45s;
+      display: flex; flex-direction: column; justify-content: flex-start; gap: 0.85rem;
+    }
+    .clock-panel__step.is-active {
+      position: relative; opacity: 1; visibility: visible; pointer-events: auto; transform: none;
+    }
+    .clock-panel__meta {
+      display: flex; flex-wrap: wrap; align-items: center; gap: 0.65rem 1rem;
+    }
+    .clock-panel__index {
+      font-size: 0.72rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--teal-deep);
+    }
+    .clock-panel__range {
+      font-family: var(--font-display); font-size: 1rem; color: var(--slate);
+      font-variant-numeric: tabular-nums;
+    }
+    .clock-panel__step h3 {
+      font-family: var(--font-display); font-size: clamp(1.35rem, 2.6vw, 1.85rem);
+      font-weight: 500; line-height: 1.25; letter-spacing: -0.015em; max-width: 20ch;
+      overflow-wrap: anywhere; word-break: break-word;
+    }
+    .clock-panel__step ul { display: grid; gap: 0.5rem; margin: 0; padding: 0; }
+    .clock-panel__step li {
+      position: relative; padding-left: 1rem; color: var(--muted);
+      font-size: 0.95rem; font-weight: 300; line-height: 1.55;
+      overflow-wrap: anywhere; word-break: break-word;
+    }
+    .clock-panel__step li::before {
+      content: ""; position: absolute; left: 0; top: 0.65em; width: 6px; height: 1px; background: var(--teal);
+    }
+    .clock-scroll-hint {
+      margin-top: 1.25rem; margin-bottom: 0.25rem; padding: 0.75rem 1rem;
+      text-align: center; font-size: 0.72rem; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--muted); width: 100%; box-sizing: border-box;
+    }
+
+    .agenda-side {
+      display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 1.5rem; margin-top: 3.5rem; align-items: stretch;
+    }
+    .agenda-side__img {
+      overflow: hidden; border-radius: var(--radius); min-height: 280px; background: var(--slate);
+    }
+    .agenda-side__img img { width: 100%; height: 100%; object-fit: cover; }
+    .agenda-side__panel {
+      background: var(--ink); color: #fff; padding: clamp(1.75rem, 4vw, 2.5rem);
+      display: flex; flex-direction: column; justify-content: center; gap: 1rem;
+    }
+    .agenda-side__panel h3 {
+      font-family: var(--font-display); font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 500; line-height: 1.2;
+    }
+    .agenda-side__panel p { color: rgba(255,255,255,0.68); font-weight: 300; }
+
+    /* ——— Outcomes ——— */
+    .outcomes-layout {
+      display: grid;
+      grid-template-columns: minmax(220px, 0.85fr) 1.15fr;
+      gap: clamp(2rem, 5vw, 4rem);
+      align-items: start;
+      margin-top: 0.5rem;
+    }
+    .outcomes-visual {
+      position: sticky; top: 6rem;
+      overflow: hidden; border-radius: var(--radius);
+      aspect-ratio: 3 / 4; background: var(--slate);
+    }
+    .outcomes-visual img { width: 100%; height: 100%; object-fit: cover; }
+    .outcomes-visual figcaption {
+      position: absolute; left: 1rem; right: 1rem; bottom: 1rem;
+      padding: 0.75rem 0.9rem; background: rgba(7,22,29,0.78);
+      color: rgba(255,255,255,0.9); font-size: 0.78rem; border: 1px solid var(--line);
+    }
+    .outcomes-list { display: grid; gap: 0; }
+    .outcome {
+      display: grid; grid-template-columns: 4.5rem 1fr; gap: 1rem 1.25rem;
+      padding: 1.65rem 0; border-top: 1px solid var(--line-dark);
+      transition: background 0.3s;
+    }
+    .outcome:last-child { border-bottom: 1px solid var(--line-dark); }
+    .outcome__num {
+      font-family: var(--font-display); font-size: 2rem; font-style: italic;
+      color: var(--teal); line-height: 1; padding-top: 0.15rem;
+    }
+    .outcome__body h3 {
+      font-family: var(--font-display); font-size: clamp(1.2rem, 2.2vw, 1.45rem);
+      font-weight: 500; letter-spacing: -0.01em; margin-bottom: 0.45rem; line-height: 1.25;
+    }
+    .outcome__body p { color: var(--muted); font-size: 0.95rem; font-weight: 300; max-width: 36rem; }
+
+    /* ——— About ——— */
+    .about__layout {
+      display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2rem, 5vw, 4rem); align-items: stretch;
+    }
+    .about__visual {
+      position: relative; overflow: hidden; border-radius: var(--radius);
+      min-height: 100%; height: 100%; align-self: stretch;
+    }
+    .about__visual img {
+      position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+    }
+    .about__badge {
+      position: absolute; left: 1rem; bottom: 1rem; background: #fff; color: var(--ink);
+      padding: 0.85rem 1.1rem; font-size: 0.8rem; max-width: 14rem; box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+    }
+    .about__badge strong { display: block; font-family: var(--font-display); font-size: 1.35rem; font-weight: 600; margin-bottom: 0.15rem; }
+    .about__services {
+      display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 1.5rem 0 2rem;
+    }
+    .chip {
+      padding: 0.45rem 0.8rem; border: 1px solid rgba(255,255,255,0.18);
+      font-size: 0.75rem; letter-spacing: 0.02em; color: rgba(255,255,255,0.85);
+    }
+    .about__offices { display: grid; gap: 0.85rem; margin-top: 0.5rem; font-size: 0.88rem; color: rgba(255,255,255,0.65); }
+    .about__offices strong { color: #fff; font-weight: 500; }
+
+    /* ——— Register ——— */
+    #register.section--fog { background: var(--fog); color: var(--ink); }
+    #register .kicker { color: var(--teal-deep); }
+    #register .display { color: var(--ink); }
+    #register .lede { color: var(--muted); }
+
+    .register-meta {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
+      background: var(--line-dark); border: 1px solid var(--line-dark);
+      margin: 0 auto 2.75rem; max-width: 980px;
+    }
+    .register-meta__item {
+      background: #fff; padding: 1.35rem 1.2rem; text-align: center;
+    }
+    .register-meta__item strong {
+      display: block; font-size: 0.68rem; letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--teal-deep); margin-bottom: 0.45rem; font-weight: 700;
+    }
+    .register-meta__item span {
+      font-size: 0.92rem; color: var(--ink); font-weight: 500; line-height: 1.4;
+    }
+
+    .register-paths {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;
+      max-width: 980px; margin: 0 auto;
+    }
+    .register-path {
+      position: relative; overflow: hidden;
+      display: grid; gap: 1.1rem; align-content: start;
+      padding: clamp(1.75rem, 3.5vw, 2.5rem);
+      min-height: 280px; background: #fff;
+      border: 1px solid var(--line-dark);
+      box-shadow: 0 16px 40px rgba(7,22,29,0.05);
+      transition: transform 0.35s var(--ease), border-color 0.35s, box-shadow 0.35s;
+    }
+    .register-path:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 22px 50px rgba(7,22,29,0.08);
+    }
+    .register-path--form { border-top: 3px solid var(--teal); }
+    .register-path--form:hover { border-color: rgba(31,158,150,0.45); border-top-color: var(--teal); }
+    .register-path--wa { border-top: 3px solid #1f9a5a; }
+    .register-path--wa:hover { border-color: rgba(31,154,90,0.4); border-top-color: #1f9a5a; }
+    .register-path__eyebrow {
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+    }
+    .register-path--form .register-path__eyebrow { color: var(--teal-deep); }
+    .register-path--wa .register-path__eyebrow { color: #17824b; }
+    .register-path h3 {
+      font-family: var(--font-display); font-size: clamp(1.55rem, 3vw, 2.1rem);
+      font-weight: 500; line-height: 1.15; letter-spacing: -0.02em; max-width: 12ch;
+      color: var(--ink);
+    }
+    .register-path p {
+      color: var(--muted); font-weight: 300; font-size: 0.95rem; max-width: 32ch;
+    }
+    .register-path .btn { margin-top: auto; justify-self: start; }
+    .register-path--form .btn { background: var(--ink); color: #fff; }
+    .register-path--form .btn:hover { background: var(--teal-deep); color: #fff; }
+    .btn--whatsapp {
+      background: #1f9a5a; color: #fff;
+    }
+    .btn--whatsapp:hover { background: #17824b; color: #fff; transform: translateY(-2px); }
+
+    /* ——— Fixed contact dock ——— */
+    .float-dock {
+      position: fixed; right: 1.1rem; bottom: 1.1rem; z-index: 120;
+      display: grid; gap: 0.7rem;
+    }
+    .float-btn {
+      width: 54px; height: 54px; border-radius: 50%;
+      display: grid; place-items: center;
+      border: 1px solid transparent;
+      box-shadow: 0 12px 28px rgba(7,22,29,0.28);
+      transition: transform 0.3s var(--ease), box-shadow 0.3s;
+      text-decoration: none;
+    }
+    .float-btn:hover { transform: translateY(-3px) scale(1.04); box-shadow: 0 16px 34px rgba(7,22,29,0.34); }
+    .float-btn:focus-visible { outline: 2px solid var(--teal-bright); outline-offset: 3px; }
+    .float-btn svg { width: 24px; height: 24px; display: block; }
+    .float-btn--call {
+      background: var(--ink); color: var(--teal-bright);
+      border-color: rgba(46,196,182,0.45);
+    }
+    .float-btn--wa {
+      background: #25d366; color: #fff;
+    }
+    .float-btn--top {
+      background: #fff; color: var(--ink);
+      border-color: rgba(7,22,29,0.12);
+      opacity: 0; pointer-events: none; transform: translateY(8px);
+      transition: opacity 0.3s, transform 0.3s var(--ease), box-shadow 0.3s;
+    }
+    .float-btn--top.is-visible {
+      opacity: 1; pointer-events: auto; transform: translateY(0);
+    }
+    .float-btn--top:hover {
+      background: var(--teal-bright); color: var(--ink);
+      transform: translateY(-3px) scale(1.04);
+    }
+    .register-disclaimer {
+      max-width: 720px; margin: 2rem auto 0; text-align: center;
+      font-size: 0.8rem; color: var(--muted); line-height: 1.6; font-weight: 300;
+    }
+    .register-disclaimer a { color: var(--teal-deep); font-weight: 500; }
+
+    /* ——— CTA band ——— */
+    .cta-band {
+      position: relative; overflow: hidden; color: #fff; min-height: 380px;
+      display: grid; align-items: center;
+    }
+    .cta-band__media { position: absolute; inset: 0; }
+    .cta-band__media img { width: 100%; height: 100%; object-fit: cover; }
+    .cta-band__overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(90deg, rgba(7,22,29,0.92) 0%, rgba(7,22,29,0.72) 55%, rgba(7,22,29,0.45) 100%);
+    }
+    .cta-band__content {
+      position: relative; z-index: 3; padding: 4.5rem 0; max-width: 40rem;
+      margin-inline: auto; text-align: center;
+    }
+    .cta-band h2 {
+      font-family: var(--font-display); font-size: clamp(2rem, 4vw, 3rem); font-weight: 500;
+      line-height: 1.15; margin: 0 auto 1rem;
+    }
+    .cta-band p { color: rgba(255,255,255,0.72); margin: 0 auto 1.75rem; font-weight: 300; }
+    .cta-band__actions {
+      display: flex; flex-wrap: wrap; justify-content: center; gap: 0.85rem;
+    }
+
+    /* ——— Footer ——— */
+    .footer {
+      background: var(--ink); color: rgba(255,255,255,0.65); padding: 3.5rem 0 2rem;
+      font-size: 0.88rem;
+    }
+    .footer__top {
+      display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: 2rem;
+      padding-bottom: 2.5rem; border-bottom: 1px solid var(--line);
+    }
+    .footer__logo {
+      display: inline-flex; align-items: center; margin-bottom: 1rem;
+      padding: 0.45rem 0.7rem; background: #fff;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 12px;
+    }
+    .footer__logo img { height: 36px; width: auto; display: block; }
+    .footer__brand p { max-width: 28ch; font-weight: 300; line-height: 1.7; }
+    .footer h4 {
+      color: #fff; font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase;
+      margin-bottom: 1rem; font-weight: 600;
+    }
+    .footer a { transition: color 0.25s; }
+    .footer a:hover { color: var(--teal-bright); }
+    .footer ul { display: grid; gap: 0.55rem; }
+    .footer__bottom {
+      display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem;
+      padding-top: 1.5rem; font-size: 0.8rem;
+    }
+
+    /* ——— Reveal helpers ——— */
+    .reveal { opacity: 0; transform: translateY(28px); }
+    .reveal.is-in { opacity: 1; transform: none; transition: opacity 0.9s var(--ease), transform 0.9s var(--ease); }
+
+    /* ——— Responsive: large desktop / PC ——— */
+    @media (min-width: 1400px) {
+      :root { --max: 1280px; }
+      .hero h1 { font-size: clamp(3.2rem, 4.5vw, 5.6rem); }
+      .clock { width: min(100%, 400px); }
+    }
+
+    /* ——— Responsive: laptop ——— */
+    @media (max-width: 1200px) {
+      .clock-layout { grid-template-columns: minmax(240px, 340px) 1fr; gap: 1.5rem; }
+      .audience__rail { grid-template-columns: repeat(3, 1fr); }
+      .register-meta { max-width: 100%; }
+      .nav__links { gap: 1.15rem; }
+      .nav__links a { font-size: 0.78rem; }
+    }
+
+    /* ——— Responsive: tablet ——— */
+    @media (max-width: 1024px) {
+      .section { padding: clamp(3.5rem, 7vw, 5.5rem) 0; }
+      .stakes__grid,
+      .about__layout,
+      .agenda-side,
+      .outcomes-layout,
+      .register-paths { grid-template-columns: 1fr; }
+      .outcomes-visual {
+        position: relative; top: auto; max-height: 360px; aspect-ratio: 16 / 10;
+      }
+      .about__visual { min-height: 300px; aspect-ratio: 16 / 10; height: auto; }
+      .audience__rail { grid-template-columns: 1fr 1fr; }
+      .register-meta { grid-template-columns: 1fr 1fr; }
+      .clock-layout {
+        grid-template-columns: 1fr; justify-items: stretch; width: min(100% - 0.5rem, var(--max));
+      }
+      .clock-scene {
+        width: 100%; margin-left: 0; margin-right: 0;
+      }
+      .clock-scene__sticky {
+        height: auto; min-height: 0;
+        padding: calc(4.75rem + env(safe-area-inset-top, 0px)) 1rem 2rem;
+      }
+      .clock-stage { width: 100%; padding-top: 0.75rem; padding-bottom: 0.75rem; }
+      .clock { width: min(100%, 300px); }
+      .clock-panel { width: 100%; max-width: 100%; }
+      .hero__carousel-nav { bottom: 1.25rem; }
+      .cta-band__overlay {
+        background: linear-gradient(180deg, rgba(7,22,29,0.55) 0%, rgba(7,22,29,0.88) 100%);
+      }
+      .footer__top { grid-template-columns: 1fr 1fr; }
+    }
+
+    /* ——— Responsive: small tablet / large phone landscape ——— */
+    @media (max-width: 900px) {
+      .nav__toggle { display: grid; place-items: center; }
+      .nav__links {
+        position: fixed; inset: 0 0 auto; top: 70px; background: rgba(7,22,29,0.97);
+        flex-direction: column; align-items: stretch; padding: 1.25rem 1.5rem 1.75rem;
+        gap: 0; border-bottom: 1px solid var(--line);
+        transform: translateY(-120%); opacity: 0; pointer-events: none;
+        transition: transform 0.4s var(--ease), opacity 0.35s;
+        max-height: calc(100svh - 70px); overflow-y: auto;
+      }
+      .nav__links.open { transform: translateY(0); opacity: 1; pointer-events: auto; }
+      .nav__links a { padding: 0.9rem 0; border-bottom: 1px solid var(--line); color: #fff; }
+      .nav__cta { margin-top: 1rem; text-align: center; width: 100%; }
+
+      .footer__top { grid-template-columns: 1fr; }
+      .register-path .btn { width: 100%; justify-self: stretch; }
+      .hero__scroll { display: none; }
+      .hero__meta {
+        flex-direction: column; align-items: stretch; width: 100%;
+      }
+      .hero__meta-item {
+        width: 100%; min-width: 0; box-sizing: border-box;
+      }
+      .hero__actions {
+        flex-direction: column; align-items: stretch; width: 100%;
+      }
+      .hero__actions .btn { width: 100%; }
+      .cta-band__actions { flex-direction: column; align-items: stretch; }
+      .cta-band__actions .btn { width: 100%; }
+      .hero__carousel-label { display: none; }
+      .float-dock {
+        right: max(0.85rem, env(safe-area-inset-right));
+        bottom: max(0.85rem, env(safe-area-inset-bottom));
+      }
+    }
+
+    /* ——— Responsive: mobile ——— */
+    @media (max-width: 640px) {
+      .container, .container-wide, .nav__inner, .hero__content {
+        width: min(100% - 1.25rem, var(--max));
+      }
+      .section { padding: 3.25rem 0; }
+      .section-head { margin-bottom: 2rem; }
+      .section-head .display { font-size: clamp(1.7rem, 7vw, 2.3rem); }
+      .audience__rail { grid-template-columns: 1fr; }
+      .register-meta { grid-template-columns: 1fr; }
+      .hero {
+        min-height: 100svh; align-items: center;
+      }
+      .hero__content { padding: 5.75rem 0 5.5rem; }
+      .hero h1 { max-width: none; font-size: clamp(2.2rem, 9vw, 3rem); }
+      .hero__lead { font-size: 0.98rem; }
+      .hero__eyebrow {
+        font-size: 0.68rem; letter-spacing: 0.1em; padding: 0.55rem 0.85rem;
+        max-width: 100%; white-space: normal; text-align: left;
+      }
+      .hero__carousel-nav {
+        left: 1rem; right: auto; bottom: 1rem;
+        max-width: calc(100% - 5.5rem);
+      }
+      .clock-scene__sticky {
+        min-height: auto; height: auto;
+        padding: calc(5rem + env(safe-area-inset-top, 0px)) 0.75rem 2.5rem;
+      }
+      .clock-stage { gap: 0.85rem; padding: 0.5rem 0 0.65rem; }
+      .clock { width: min(92vw, 250px); }
+      .clock__digital { font-size: 1.75rem; padding-top: 0.25rem; }
+      .clock__hour-num { font-size: 0.85rem; }
+      .clock__min-num { font-size: 0.45rem; }
+      .clock-panel {
+        padding: 1.35rem 1.15rem 1.5rem;
+        margin-inline: 0;
+      }
+      .clock-panel__step {
+        padding: 1.35rem 1.15rem 1.5rem;
+        gap: 0.75rem;
+      }
+      .clock-panel__step h3 { max-width: none; font-size: 1.2rem; }
+      .clock-panel__step li { font-size: 0.9rem; }
+      .clock-scroll-hint {
+        margin-top: 1rem; margin-bottom: 0.5rem; padding: 0.85rem 0.75rem 1rem;
+        line-height: 1.4;
+      }
+      .agenda-side { margin-top: 2rem; }
+      .cta-band { min-height: 320px; }
+      .cta-band__content { padding: 3.25rem 0; }
+      .footer { padding: 2.75rem 0 6.5rem; }
+      .footer__bottom { flex-direction: column; gap: 0.5rem; }
+      .float-btn { width: 48px; height: 48px; }
+      .float-btn svg { width: 22px; height: 22px; }
+      .nav__logo img { height: 30px; }
+      .stakes__point { grid-template-columns: 3rem 1fr; }
+      .outcome { grid-template-columns: 3.25rem 1fr; gap: 0.75rem; }
+    }
+
+    /* ——— Responsive: small phones ——— */
+    @media (max-width: 400px) {
+      .hero__meta-copy b { font-size: 0.88rem; }
+      .btn { padding: 0.9rem 1.2rem; font-size: 0.88rem; }
+      .register-path { min-height: 0; padding: 1.35rem; }
+      .display { font-size: clamp(1.55rem, 8vw, 2rem); }
+    }
+
+    /* ——— Landscape phones ——— */
+    @media (max-height: 500px) and (orientation: landscape) {
+      .hero { min-height: auto; }
+      .hero__content { padding: 5rem 0 3rem; }
+      .clock-scene__sticky { min-height: auto; height: auto; }
+      .float-dock { gap: 0.45rem; }
+      .float-btn { width: 42px; height: 42px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important; animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important; scroll-behavior: auto !important;
+      }
+      .reveal { opacity: 1; transform: none; }
+      .hero__eyebrow::before { animation: none; }
+      .hero__slide img { transform: none; transition: none; }
+      .hero__slide.is-active img { transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="nav" id="nav">
+    <div class="nav__inner">
+      <a class="nav__logo" href="https://www.meddevices.net/" aria-label="MedDevices Lifesciences home">
+        <img src="public/brand/meddevices-logo.png" alt="MedDevices" width="201" height="58" />
+      </a>
+      <button class="nav__toggle" id="navToggle" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="nav__links" id="navLinks" aria-label="Primary">
+        <a href="#why">Why UDI</a>
+        <a href="#audience">Who it's for</a>
+        <a href="#agenda">Agenda</a>
+        <a href="#about">About</a>
+        <a class="nav__cta" href="https://docs.google.com/forms/d/e/1FAIpQLSfN4K6kqFf1lLyZl0DBZeaGGYwj-rbe20F8WFZU7U3daDmpJw/viewform" target="_blank" rel="noopener noreferrer">Reserve your seat</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- SCENE 1: Hero -->
+    <section class="hero" id="top">
+      <div class="hero__media" id="heroCarousel" aria-hidden="true">
+        <div class="hero__slide is-active" data-label="Manufacturing teams">
+          <picture>
+            <source media="(max-width: 900px)" srcset="public/images/hero-mobile-1.jpg" />
+            <img src="public/images/hero-right-1.jpg" alt="" />
+          </picture>
+        </div>
+        <div class="hero__slide" data-label="Labeling experts">
+          <picture>
+            <source media="(max-width: 900px)" srcset="public/images/hero-mobile-2.jpg" />
+            <img src="public/images/hero-right-2.jpg" alt="" />
+          </picture>
+        </div>
+        <div class="hero__slide" data-label="Quality & RA teams">
+          <picture>
+            <source media="(max-width: 900px)" srcset="public/images/hero-mobile-3.jpg" />
+            <img src="public/images/hero-right-3.jpg" alt="" />
+          </picture>
+        </div>
+        <div class="hero__slide" data-label="Live training">
+          <picture>
+            <source media="(max-width: 900px)" srcset="public/images/hero-mobile-4.jpg" />
+            <img src="public/images/hero-right-4.jpg" alt="" />
+          </picture>
+        </div>
+      </div>
+      <div class="hero__overlay" aria-hidden="true"></div>
+      <div class="hero__carousel-nav" role="tablist" aria-label="Hero imagery">
+        <button type="button" class="hero__carousel-dot is-active" aria-label="Show manufacturing teams image" aria-selected="true"></button>
+        <button type="button" class="hero__carousel-dot" aria-label="Show labeling experts image" aria-selected="false"></button>
+        <button type="button" class="hero__carousel-dot" aria-label="Show quality and RA teams image" aria-selected="false"></button>
+        <button type="button" class="hero__carousel-dot" aria-label="Show live training image" aria-selected="false"></button>
+        <span class="hero__carousel-label" id="heroCarouselLabel">Manufacturing teams</span>
+      </div>
+      <div class="hero__content">
+        <p class="hero__eyebrow reveal">Live webinar · Free to attend</p>
+        <h1 class="reveal">Understanding <em>UDI</em></h1>
+        <p class="hero__lead reveal">
+          A practical guide for medical device professionals — from fundamentals and EU MDR/IVDR
+          requirements to labeling, EUDAMED registration, and audit-ready best practices.
+        </p>
+        <div class="hero__meta reveal">
+          <div class="hero__meta-item hero__meta-item--date">
+            <span class="hero__meta-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>
+            </span>
+            <span class="hero__meta-copy">
+              <strong>Date</strong>
+              <b>28 November</b>
+            </span>
+          </div>
+          <div class="hero__meta-item hero__meta-item--time">
+            <span class="hero__meta-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+            </span>
+            <span class="hero__meta-copy">
+              <strong>Time</strong>
+              <b>11:00 AM – 12:30 PM</b>
+            </span>
+          </div>
+          <div class="hero__meta-item hero__meta-item--platform">
+            <span class="hero__meta-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16v10H4z"/><path d="M8 17v2M16 17v2M2 11h20"/></svg>
+            </span>
+            <span class="hero__meta-copy">
+              <strong>Platform</strong>
+              <b>LinkedIn + Zoom · 90 min</b>
+            </span>
+          </div>
+        </div>
+        <div class="hero__actions reveal">
+          <a class="btn btn--primary" href="https://docs.google.com/forms/d/e/1FAIpQLSfN4K6kqFf1lLyZl0DBZeaGGYwj-rbe20F8WFZU7U3daDmpJw/viewform" target="_blank" rel="noopener noreferrer">Reserve your free seat</a>
+          <a class="btn btn--ghost" href="https://wa.me/919056742784" target="_blank" rel="noopener noreferrer">WhatsApp enquiries</a>
+        </div>
+      </div>
+      <div class="hero__scroll" aria-hidden="true">Scroll</div>
+    </section>
+
+    <!-- SCENE 2: Why it matters -->
+    <section class="section section--fog" id="why">
+      <div class="container">
+        <div class="section-head">
+          <p class="kicker reveal">Why this session matters</p>
+          <h2 class="display reveal">UDI is more than a barcode — it’s how devices stay visible, traceable, and market-ready.</h2>
+          <p class="lede reveal">
+            MedDevices Lifesciences helps manufacturers navigate global regulatory pathways across the EU, UK, and US.
+            This webinar turns Unique Device Identification into clear, actionable guidance your teams can use immediately.
+          </p>
+        </div>
+
+        <div class="stakes__grid">
+          <figure class="stakes__visual reveal">
+            <img src="public/images/udi-label-detail.jpg" alt="Close-up of medical device packaging with UDI barcode labeling" loading="lazy" />
+            <figcaption class="stakes__caption">Human-readable and machine-readable UDI on device labeling</figcaption>
+          </figure>
+          <div>
+            <div class="stakes__points">
+              <article class="stakes__point reveal">
+                <div class="stakes__num">01</div>
+                <div>
+                  <h3>Patient safety &amp; traceability</h3>
+                  <p>UDI enables precise device identification across the supply chain — critical for vigilance, recalls, and post-market surveillance.</p>
+                </div>
+              </article>
+              <article class="stakes__point reveal">
+                <div class="stakes__num">02</div>
+                <div>
+                  <h3>EU MDR &amp; IVDR readiness</h3>
+                  <p>Understand issuing agencies, Basic UDI-DI, labeling obligations, and where to verify market-specific requirements before you ship.</p>
+                </div>
+              </article>
+              <article class="stakes__point reveal">
+                <div class="stakes__num">03</div>
+                <div>
+                  <h3>EUDAMED without the fog</h3>
+                  <p>Connect labeling data to device registration records so documentation, labels, and regulatory submissions stay consistent.</p>
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCENE 3: Audience -->
+    <section class="section section--dark" id="audience">
+      <div class="container">
+        <div class="section-head audience__head">
+          <p class="kicker reveal">Target audience</p>
+          <h2 class="display reveal">Built for the people who keep devices compliant — and markets open.</h2>
+          <p class="lede reveal">Whether you own labeling, quality systems, or market access strategy, this session meets you where you work.</p>
+        </div>
+        <div class="audience__rail">
+          <article class="audience__item reveal">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M9 12h6M9 16h6M7 4h10a2 2 0 012 2v14l-3-2-3 2-3-2-3 2V6a2 2 0 012-2z"/></svg>
+            <div>
+              <h3>Regulatory Affairs professionals</h3>
+              <span>Compliance strategy</span>
+            </div>
+          </article>
+          <article class="audience__item reveal">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 3l8 4v5c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V7l8-4z"/><path d="M9 12l2 2 4-4"/></svg>
+            <div>
+              <h3>Quality Assurance professionals</h3>
+              <span>QMS &amp; audit readiness</span>
+            </div>
+          </article>
+          <article class="audience__item reveal">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a4 4 0 018 0v2"/></svg>
+            <div>
+              <h3>Medical device manufacturers</h3>
+              <span>Market access teams</span>
+            </div>
+          </article>
+          <article class="audience__item reveal">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"/><circle cx="18" cy="17" r="2"/></svg>
+            <div>
+              <h3>Packaging &amp; labeling teams</h3>
+              <span>UDI-DI / UDI-PI practice</span>
+            </div>
+          </article>
+          <article class="audience__item reveal">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="8" r="3"/><path d="M5 20a7 7 0 0114 0"/><path d="M19 4l2 2-2 2M5 4L3 6l2 2"/></svg>
+            <div>
+              <h3>Consultants &amp; service providers</h3>
+              <span>Client delivery excellence</span>
+            </div>
+          </article>
+          <article class="audience__item reveal">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 010 18M12 3a14 14 0 000 18"/></svg>
+            <div>
+              <h3>Other interested parties</h3>
+              <span>Global regulatory learners</span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCENE 4: Agenda -->
+    <section class="section section--fog" id="agenda">
+      <div class="container">
+        <div class="section-head agenda__intro">
+          <p class="kicker reveal">Webinar flow</p>
+          <h2 class="display reveal">90 minutes. Seven clear stages. From welcome to live Q&amp;A.</h2>
+          <p class="agenda__hint reveal">Scroll the session clock — hour and minute hands move with each block of the agenda.</p>
+        </div>
+
+        <div class="clock-scene" id="clockScene">
+          <div class="clock-scene__sticky" id="clockSticky">
+            <div class="clock-layout">
+              <div class="clock-stage">
+                <div class="clock" id="sessionClock" role="img" aria-label="Session clock showing the current webinar block time">
+                  <div class="clock__ring" aria-hidden="true"></div>
+                  <div class="clock__ticks" id="clockTicks" aria-hidden="true"></div>
+                  <div class="clock__mins" id="clockMins" aria-hidden="true"></div>
+                  <div class="clock__hours" id="clockHours" aria-hidden="true"></div>
+                  <div class="clock__markers" id="clockMarkers" aria-hidden="true"></div>
+                  <div class="clock__label">Session</div>
+                  <div class="clock__hand clock__hand--hour" id="hourHand"></div>
+                  <div class="clock__hand clock__hand--minute" id="minuteHand"></div>
+                  <div class="clock__center" aria-hidden="true"></div>
+                </div>
+                <div class="clock__digital" id="clockDigital" aria-live="polite">
+                  11:00
+                  <small id="clockDigitalLabel">Block 01 of 07</small>
+                </div>
+                <div class="clock__dots" id="clockDots" role="tablist" aria-label="Agenda blocks"></div>
+              </div>
+
+              <div class="clock-panel" id="clockPanel">
+                <article class="clock-panel__step is-active" data-step="0" data-hour="11" data-minute="0" data-range="11:00–11:10">
+                  <div class="clock-panel__meta">
+                    <span class="clock-panel__index">Block 01</span>
+                    <span class="clock-panel__range">11:00–11:10</span>
+                  </div>
+                  <h3>Welcome, introduction &amp; company overview</h3>
+                  <ul>
+                    <li>Meet the host and MedDevices Lifesciences — services, expertise, and objectives</li>
+                    <li>Webinar scope and learning outcomes</li>
+                    <li>Live audience poll: roles, UDI familiarity, and target markets</li>
+                  </ul>
+                </article>
+                <article class="clock-panel__step" data-step="1" data-hour="11" data-minute="10" data-range="11:10–11:25">
+                  <div class="clock-panel__meta">
+                    <span class="clock-panel__index">Block 02</span>
+                    <span class="clock-panel__range">11:10–11:25</span>
+                  </div>
+                  <h3>UDI fundamentals: understanding the basics</h3>
+                  <ul>
+                    <li>What Unique Device Identification is — and why it matters</li>
+                    <li>Role of UDI in identification, traceability, and patient safety</li>
+                    <li>UDI-DI vs UDI-PI, and the UDI lifecycle for manufacturers</li>
+                  </ul>
+                </article>
+                <article class="clock-panel__step" data-step="2" data-hour="11" data-minute="25" data-range="11:25–11:35">
+                  <div class="clock-panel__meta">
+                    <span class="clock-panel__index">Block 03</span>
+                    <span class="clock-panel__range">11:25–11:35</span>
+                  </div>
+                  <h3>UDI regulatory landscape — EU MDR &amp; IVDR</h3>
+                  <ul>
+                    <li>EU UDI framework under MDR and IVDR</li>
+                    <li>Manufacturer and economic operator responsibilities</li>
+                    <li>Issuing entities, applicability, exemptions, and compliance milestones</li>
+                  </ul>
+                </article>
+                <article class="clock-panel__step" data-step="3" data-hour="11" data-minute="35" data-range="11:35–12:00">
+                  <div class="clock-panel__meta">
+                    <span class="clock-panel__index">Block 04</span>
+                    <span class="clock-panel__range">11:35–12:00</span>
+                  </div>
+                  <h3>UDI structure, coding systems &amp; labeling</h3>
+                  <ul>
+                    <li>UDI-DI, UDI-PI, and Basic UDI-DI in the EU context</li>
+                    <li>Human-readable vs machine-readable information</li>
+                    <li>GS1, HIBCC, and ICCBBA identification systems</li>
+                    <li>Label and packaging-level requirements with a practical label walkthrough</li>
+                  </ul>
+                </article>
+                <article class="clock-panel__step" data-step="4" data-hour="12" data-minute="0" data-range="12:00–12:10">
+                  <div class="clock-panel__meta">
+                    <span class="clock-panel__index">Block 05</span>
+                    <span class="clock-panel__range">12:00–12:10</span>
+                  </div>
+                  <h3>EUDAMED &amp; UDI / device registration</h3>
+                  <ul>
+                    <li>EUDAMED UDI/Device registration module overview</li>
+                    <li>Relationship between Basic UDI-DI, UDI-DI, and device records</li>
+                    <li>Keeping labels, records, and regulatory documentation aligned</li>
+                  </ul>
+                </article>
+                <article class="clock-panel__step" data-step="5" data-hour="12" data-minute="10" data-range="12:10–12:20">
+                  <div class="clock-panel__meta">
+                    <span class="clock-panel__index">Block 06</span>
+                    <span class="clock-panel__range">12:10–12:20</span>
+                  </div>
+                  <h3>Common mistakes &amp; best practices</h3>
+                  <ul>
+                    <li>Frequent UDI compliance pitfalls</li>
+                    <li>Cross-functional coordination, documentation, and audit readiness</li>
+                  </ul>
+                </article>
+                <article class="clock-panel__step" data-step="6" data-hour="12" data-minute="20" data-range="12:20–12:30">
+                  <div class="clock-panel__meta">
+                    <span class="clock-panel__index">Block 07</span>
+                    <span class="clock-panel__range">12:20–12:30</span>
+                  </div>
+                  <h3>Live Q&amp;A, feedback &amp; closing</h3>
+                  <ul>
+                    <li>Implementation questions answered live</li>
+                    <li>Key takeaways, free resource, and feedback survey</li>
+                  </ul>
+                </article>
+              </div>
+            </div>
+            <p class="clock-scroll-hint" id="clockScrollHint">Scroll to advance the session clock</p>
+          </div>
+        </div>
+
+        <div class="agenda-side">
+          <figure class="agenda-side__img reveal">
+            <img src="public/images/eudamed-network.jpg" alt="Abstract visualization of EUDAMED and regulatory data pathways" loading="lazy" />
+          </figure>
+          <div class="agenda-side__panel reveal">
+            <p class="kicker" style="color: var(--teal-bright);">Signature focus</p>
+            <h3>From barcode confusion to labeling confidence — in one sitting.</h3>
+            <p>We’ll walk a practical label example, flag common issues, and show how UDI data should flow into EUDAMED without costly rework.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCENE 5: Outcomes -->
+    <section class="section section--mist" id="outcomes">
+      <div class="container">
+        <div class="section-head">
+          <p class="kicker reveal">What you’ll walk away with</p>
+          <h2 class="display reveal">Clear language. Practical structure. Fewer compliance surprises.</h2>
+          <p class="lede reveal">Leave the session able to brief your team, pressure-test labels, and ask sharper questions of suppliers and notified bodies.</p>
+        </div>
+
+        <div class="outcomes-layout">
+          <figure class="outcomes-visual reveal">
+            <img src="public/images/udi-outcomes-device.jpg" alt="Medical device packaging with UDI barcode and QR label on a clinical workbench" loading="lazy" />
+            <figcaption>UDI on device labeling — ready for real-world compliance</figcaption>
+          </figure>
+
+          <div class="outcomes-list">
+            <article class="outcome reveal">
+              <div class="outcome__num" aria-hidden="true">01</div>
+              <div class="outcome__body">
+                <h3>UDI literacy that sticks</h3>
+                <p>Confidently explain UDI-DI, UDI-PI, and Basic UDI-DI to colleagues across RA, QA, and labeling.</p>
+              </div>
+            </article>
+            <article class="outcome reveal">
+              <div class="outcome__num" aria-hidden="true">02</div>
+              <div class="outcome__body">
+                <h3>EU regulatory map</h3>
+                <p>Know how MDR/IVDR, issuing agencies, and exemptions shape your device’s identification obligations.</p>
+              </div>
+            </article>
+            <article class="outcome reveal">
+              <div class="outcome__num" aria-hidden="true">03</div>
+              <div class="outcome__body">
+                <h3>Labeling checklist instincts</h3>
+                <p>Spot common labeling gaps before they become CAPAs, delayed registrations, or market hold-ups.</p>
+              </div>
+            </article>
+            <article class="outcome reveal">
+              <div class="outcome__num" aria-hidden="true">04</div>
+              <div class="outcome__body">
+                <h3>EUDAMED data alignment</h3>
+                <p>Connect device records, labels, and documentation so registration stays consistent and audit-ready.</p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCENE 6: About MedDevices -->
+    <section class="section section--dark" id="about">
+      <div class="container">
+        <div class="about__layout">
+          <figure class="about__visual reveal">
+            <img src="public/images/cleanroom-path.jpg" alt="Clinical manufacturing corridor representing MedDevices regulatory pathways" loading="lazy" />
+            <div class="about__badge">
+              <strong>15+ years</strong>
+              Regulatory experience helping manufacturers enter EU, UK &amp; US markets
+            </div>
+          </figure>
+          <div>
+            <p class="kicker reveal">About MedDevices Lifesciences</p>
+            <h2 class="display reveal">Your one-stop partner for medical device regulatory success.</h2>
+            <p class="lede reveal">
+              We are a Total Quality Assurance provider specializing in medical devices worldwide —
+              inspections, trainings, CE marking, ISO certifications, and testing of electrical &amp; electromedical products.
+              Customized solutions so you achieve and maintain regulatory and commercial success.
+            </p>
+            <div class="about__services reveal">
+              <span class="chip">EU Authorised Representative</span>
+              <span class="chip">UK Responsible Person</span>
+              <span class="chip">US FDA Agent</span>
+              <span class="chip">CE Marking</span>
+              <span class="chip">ISO 13485</span>
+              <span class="chip">UDI Training</span>
+              <span class="chip">Free Sales Certificate</span>
+            </div>
+            <div class="about__offices reveal">
+              <div><strong>Webinar enquiry</strong> — <a href="https://wa.me/919056742784">+91-9056742784</a> (WhatsApp)</div>
+              <div><strong>Email</strong> — <a href="mailto:bo@meddevices.net">bo@meddevices.net</a></div>
+              <div><strong>India</strong> — Ghaziabad</div>
+              <div><strong>UK</strong> — London · <strong>Netherlands</strong> — Amsterdam</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCENE 7: Register -->
+    <section class="section section--fog" id="register">
+      <div class="container">
+        <div class="section-head">
+          <p class="kicker reveal">Reserve your seat</p>
+          <h2 class="display reveal">Two ways in. One clear session.</h2>
+          <p class="lede reveal">
+            Register on the official form, or message us on WhatsApp for any enquiry before 28 November 2026.
+          </p>
+        </div>
+
+        <div class="register-meta reveal">
+          <div class="register-meta__item">
+            <strong>Date</strong>
+            <span>28 November 2026</span>
+          </div>
+          <div class="register-meta__item">
+            <strong>Time</strong>
+            <span>11:00 AM – 12:30 PM</span>
+          </div>
+          <div class="register-meta__item">
+            <strong>Mode</strong>
+            <span>Online · LinkedIn + Zoom</span>
+          </div>
+          <div class="register-meta__item">
+            <strong>Duration</strong>
+            <span>1 hour 30 minutes</span>
+          </div>
+        </div>
+
+        <div class="register-paths">
+          <a
+            class="register-path register-path--form reveal"
+            href="https://docs.google.com/forms/d/e/1FAIpQLSfN4K6kqFf1lLyZl0DBZeaGGYwj-rbe20F8WFZU7U3daDmpJw/viewform"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <p class="register-path__eyebrow">Primary path</p>
+            <h3>Official registration form</h3>
+            <p>Secure your free seat through the MedDevices Google Form. Confirmation and session access follow after submit.</p>
+            <span class="btn">Open registration form</span>
+          </a>
+
+          <a
+            class="register-path register-path--wa reveal"
+            href="https://wa.me/919056742784?text=Hi%20MedDevices%2C%20I%20have%20an%20enquiry%20about%20the%20Understanding%20UDI%20webinar."
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <p class="register-path__eyebrow">Enquiries</p>
+            <h3>WhatsApp us directly</h3>
+            <p>Questions about the webinar, agenda, or access? Message +91-9056742784 and we’ll help promptly.</p>
+            <span class="btn btn--whatsapp">Chat on WhatsApp</span>
+          </a>
+        </div>
+
+        <p class="register-disclaimer reveal">
+          Contact <a href="https://wa.me/919056742784">+91-9056742784</a>
+          or <a href="mailto:bo@meddevices.net">bo@meddevices.net</a>.
+          This webinar is for general awareness and educational purposes only and does not constitute regulatory or legal advice.
+        </p>
+      </div>
+    </section>
+
+    <!-- SCENE 8: Final invite -->
+    <section class="cta-band">
+      <div class="cta-band__media" aria-hidden="true">
+        <img src="public/images/regulatory-desk.jpg" alt="" loading="lazy" />
+      </div>
+      <div class="cta-band__overlay" aria-hidden="true"></div>
+      <div class="container">
+        <div class="cta-band__content reveal">
+          <h2>Clarity starts with the right identifier.</h2>
+          <p>Register now, or message us on WhatsApp if you have any questions before 28 November.</p>
+          <div class="cta-band__actions">
+            <a class="btn btn--primary" href="https://docs.google.com/forms/d/e/1FAIpQLSfN4K6kqFf1lLyZl0DBZeaGGYwj-rbe20F8WFZU7U3daDmpJw/viewform" target="_blank" rel="noopener noreferrer">Open registration form</a>
+            <a class="btn btn--ghost" href="https://wa.me/919056742784" target="_blank" rel="noopener noreferrer">WhatsApp enquiries</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__top">
+        <div class="footer__brand">
+          <a class="footer__logo" href="https://www.meddevices.net/">
+            <img src="public/brand/meddevices-logo.png" alt="MedDevices" width="201" height="58" />
+          </a>
+          <p>MedDevices Lifesciences — Total Quality Assurance for medical devices across EU, UK, US and beyond.</p>
+        </div>
+        <div>
+          <h4>Explore</h4>
+          <ul>
+            <li><a href="https://www.meddevices.net/">meddevices.net</a></li>
+            <li><a href="https://www.meddevices.net/eareu-service/">EU Authorised Representative</a></li>
+            <li><a href="#agenda">Webinar agenda</a></li>
+            <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSfN4K6kqFf1lLyZl0DBZeaGGYwj-rbe20F8WFZU7U3daDmpJw/viewform" target="_blank" rel="noopener noreferrer">Register</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Contact</h4>
+          <ul>
+            <li><a href="https://wa.me/919056742784" target="_blank" rel="noopener noreferrer">WhatsApp +91-9056742784</a></li>
+            <li><a href="mailto:bo@meddevices.net">bo@meddevices.net</a></li>
+            <li><a href="https://www.meddevices.net/">meddevices.net</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <span>© <span id="year"></span> MedDevices Lifesciences. All rights reserved.</span>
+        <span>Understanding UDI webinar landing · Not affiliated with issuing agencies GS1, HIBCC, or ICCBBA.</span>
+      </div>
+    </div>
+  </footer>
+
+  <div class="float-dock" aria-label="Quick contact">
+    <button
+      type="button"
+      class="float-btn float-btn--top"
+      id="backToTop"
+      aria-label="Back to top"
+      title="Back to top"
+    >
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+        <path d="M12 19V5M5 12l7-7 7 7"/>
+      </svg>
+    </button>
+    <a
+      class="float-btn float-btn--call"
+      href="tel:+919056742784"
+      aria-label="Call +91-9056742784"
+      title="Call +91-9056742784"
+    >
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+        <path d="M22 16.9v2a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3.1 19.5 19.5 0 01-6-6A19.8 19.8 0 012.1 4.2 2 2 0 014.1 2h2a2 2 0 012 1.7c.1.9.3 1.8.6 2.6a2 2 0 01-.5 2.1L7.1 9.5a16 16 0 006 6l1.1-1.1a2 2 0 012.1-.5c.8.3 1.7.5 2.6.6A2 2 0 0122 16.9z"/>
+      </svg>
+    </a>
+    <a
+      class="float-btn float-btn--wa"
+      href="https://wa.me/919056742784?text=Hi%20MedDevices%2C%20I%20have%20an%20enquiry%20about%20the%20Understanding%20UDI%20webinar."
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="WhatsApp +91-9056742784"
+      title="WhatsApp +91-9056742784"
+    >
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M20.5 3.5A11 11 0 004.1 17.7L3 21.5l3.9-1A11 11 0 1020.5 3.5zm-8.5 17a9 9 0 01-4.6-1.3l-.3-.2-2.3.6.6-2.2-.2-.3A9 9 0 1120 12a9 9 0 01-8 8.5zm5-6.7c-.3-.1-1.6-.8-1.9-.9s-.4-.1-.6.1-.7.9-.8 1-.3.2-.6.1a7.4 7.4 0 01-3.6-3.1c-.3-.4.3-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.9c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 00-.7.3 2.9 2.9 0 00-.9 2.2 5.1 5.1 0 001.1 2.7 11.6 11.6 0 004.5 4 15 15 0 002.4.8 2.3 2.3 0 001.5-.7 2.7 2.7 0 00.6-1.6c0-.2-.1-.3-.4-.4z"/>
+      </svg>
+    </a>
+  </div>
+
+  <script>
+    (function () {
+      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      document.getElementById("year").textContent = new Date().getFullYear();
+
+      /* Hero carousel */
+      const heroSlides = Array.from(document.querySelectorAll(".hero__slide"));
+      const heroDots = Array.from(document.querySelectorAll(".hero__carousel-dot"));
+      const heroLabel = document.getElementById("heroCarouselLabel");
+      let heroIndex = 0;
+      let heroTimer = null;
+
+      function showHeroSlide(index) {
+        heroIndex = (index + heroSlides.length) % heroSlides.length;
+        heroSlides.forEach((slide, i) => {
+          const on = i === heroIndex;
+          slide.classList.toggle("is-active", on);
+          /* restart ken-burns by toggling image transform via reflow */
+          if (on && !reduceMotion) {
+            const img = slide.querySelector("img");
+            img.style.transition = "none";
+            img.style.transform = "scale(1.06)";
+            void img.offsetWidth;
+            img.style.transition = "";
+            img.style.transform = "";
+          }
+        });
+        heroDots.forEach((dot, i) => {
+          const on = i === heroIndex;
+          dot.classList.toggle("is-active", on);
+          dot.setAttribute("aria-selected", on ? "true" : "false");
+        });
+        if (heroLabel) heroLabel.textContent = heroSlides[heroIndex].dataset.label || "";
+      }
+
+      function startHeroCarousel() {
+        stopHeroCarousel();
+        if (reduceMotion || heroSlides.length < 2) return;
+        heroTimer = window.setInterval(() => showHeroSlide(heroIndex + 1), 5500);
+      }
+
+      function stopHeroCarousel() {
+        if (heroTimer) {
+          window.clearInterval(heroTimer);
+          heroTimer = null;
+        }
+      }
+
+      heroDots.forEach((dot, i) => {
+        dot.addEventListener("click", () => {
+          showHeroSlide(i);
+          startHeroCarousel();
+        });
+      });
+
+      document.addEventListener("visibilitychange", () => {
+        if (document.hidden) stopHeroCarousel();
+        else startHeroCarousel();
+      });
+
+      showHeroSlide(0);
+      startHeroCarousel();
+
+      /* Nav */
+      const nav = document.getElementById("nav");
+      const toggle = document.getElementById("navToggle");
+      const links = document.getElementById("navLinks");
+      const backToTop = document.getElementById("backToTop");
+
+      function onScrollNav() {
+        const y = window.scrollY || window.pageYOffset;
+        nav.classList.toggle("scrolled", y > 40);
+        if (backToTop) backToTop.classList.toggle("is-visible", y > 480);
+      }
+      onScrollNav();
+      window.addEventListener("scroll", onScrollNav, { passive: true });
+
+      if (backToTop) {
+        backToTop.addEventListener("click", () => {
+          if (window.lenisInstance) window.lenisInstance.scrollTo(0, { duration: 1.1 });
+          else window.scrollTo({ top: 0, behavior: "smooth" });
+        });
+      }
+
+      toggle.addEventListener("click", () => {
+        const open = links.classList.toggle("open");
+        toggle.setAttribute("aria-expanded", String(open));
+        toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+      });
+      links.querySelectorAll("a").forEach((a) => {
+        a.addEventListener("click", () => {
+          links.classList.remove("open");
+          toggle.setAttribute("aria-expanded", "false");
+        });
+      });
+
+      /* Section background SVG decorations (skip hero) */
+      const decorIcons = [
+        '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16v10H4z"/><path d="M7 10h.01M10 10h.01M13 10h.01M16 10h.01M7 13h.01M10 13h.01M13 13h.01M16 13h.01"/></svg>',
+        '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l8 4v5c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V7l8-4z"/><path d="M9 12l2 2 4-4"/></svg>',
+        '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg>',
+        '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5h6l2 2v12a1 1 0 01-1 1H8a1 1 0 01-1-1V7l2-2z"/><path d="M9 5v2h6"/><path d="M9 12h6M9 15h4"/></svg>',
+        '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 010 18M12 3a14 14 0 000 18"/></svg>',
+        '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"/></svg>',
+      ];
+
+      document.querySelectorAll("main > .section, main > .cta-band").forEach((section, sIdx) => {
+        if (section.classList.contains("hero") || section.id === "top") return;
+        const decor = document.createElement("div");
+        decor.className = "section-decor";
+        decor.setAttribute("aria-hidden", "true");
+        const slots = ["a", "b", "c", "d"];
+        slots.forEach((slot, i) => {
+          const wrap = document.createElement("div");
+          wrap.className = "section-decor__item section-decor__item--" + slot;
+          wrap.innerHTML = decorIcons[(sIdx + i) % decorIcons.length];
+          decor.appendChild(wrap);
+        });
+        section.insertBefore(decor, section.firstChild);
+      });
+
+      /* Reveal on scroll */
+      const reveals = document.querySelectorAll(".reveal");
+      if (reduceMotion || !("IntersectionObserver" in window)) {
+        reveals.forEach((el) => el.classList.add("is-in"));
+      } else {
+        const io = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("is-in");
+                io.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.12, rootMargin: "0px 0px -6% 0px" }
+        );
+        reveals.forEach((el, i) => {
+          el.style.transitionDelay = (i % 6) * 0.06 + "s";
+          io.observe(el);
+        });
+      }
+
+      /* ——— Session clock ——— */
+      const steps = Array.from(document.querySelectorAll(".clock-panel__step"));
+      const hourHand = document.getElementById("hourHand");
+      const minuteHand = document.getElementById("minuteHand");
+      const clockDigital = document.getElementById("clockDigital");
+      const clockTicks = document.getElementById("clockTicks");
+      const clockHours = document.getElementById("clockHours");
+      const clockMins = document.getElementById("clockMins");
+      const clockMarkers = document.getElementById("clockMarkers");
+      const clockDots = document.getElementById("clockDots");
+
+      function placeOnFace(el, angleDeg, radiusPct) {
+        const rad = ((angleDeg - 90) * Math.PI) / 180;
+        const x = 50 + Math.cos(rad) * radiusPct;
+        const y = 50 + Math.sin(rad) * radiusPct;
+        el.style.left = x + "%";
+        el.style.top = y + "%";
+      }
+      let activeStep = 0;
+      let handState = { hour: 0, minute: 0 };
+
+      function pad(n) { return String(n).padStart(2, "0"); }
+
+      function anglesFor(hour, minute) {
+        return {
+          hour: ((hour % 12) * 30) + (minute * 0.5),
+          minute: minute * 6,
+        };
+      }
+
+      function shortestSpin(from, to) {
+        let delta = ((to - from + 540) % 360) - 180;
+        return from + delta;
+      }
+
+      function applyHands(hourDeg, minuteDeg, animate) {
+        const nextHour = shortestSpin(handState.hour, hourDeg);
+        const nextMinute = shortestSpin(handState.minute, minuteDeg);
+        handState = { hour: nextHour, minute: nextMinute };
+
+        if (animate && window.gsap && !reduceMotion) {
+          gsap.to(hourHand, { rotation: nextHour, duration: 0.55, ease: "power2.out", overwrite: true });
+          gsap.to(minuteHand, { rotation: nextMinute, duration: 0.55, ease: "power2.out", overwrite: true });
+        } else {
+          hourHand.style.transform = "rotate(" + nextHour + "deg)";
+          minuteHand.style.transform = "rotate(" + nextMinute + "deg)";
+        }
+      }
+
+      function stepStartMinutes(step) {
+        return Number(step.dataset.hour) * 60 + Number(step.dataset.minute);
+      }
+
+      /* Right-side block + markers only — does not move hands */
+      function setActiveBlock(index) {
+        const i = Math.max(0, Math.min(steps.length - 1, index));
+        if (i === activeStep) return;
+        activeStep = i;
+        steps.forEach((el, idx) => el.classList.toggle("is-active", idx === i));
+        clockMarkers.querySelectorAll(".clock__marker").forEach((el, idx) => {
+          el.classList.toggle("is-active", idx === i);
+        });
+        clockDots.querySelectorAll(".clock__dot").forEach((el, idx) => {
+          el.classList.toggle("is-active", idx === i);
+          el.setAttribute("aria-selected", idx === i ? "true" : "false");
+        });
+        if (window.ScrollTrigger) {
+          window.requestAnimationFrame(function () {
+            ScrollTrigger.refresh();
+          });
+        }
+      }
+
+      function renderClockTime(totalMins, blockIndex) {
+        const hour = Math.floor(totalMins / 60) % 24;
+        const minute = Math.floor(totalMins % 60);
+        const hourDeg = (totalMins % (12 * 60)) * 0.5;
+        const minuteDeg = (totalMins % 60) * 6;
+
+        hourHand.style.transform = "rotate(" + hourDeg + "deg)";
+        minuteHand.style.transform = "rotate(" + minuteDeg + "deg)";
+        handState = { hour: hourDeg, minute: minuteDeg };
+
+        clockDigital.innerHTML =
+          pad(hour) + ":" + pad(minute) +
+          '<small id="clockDigitalLabel">Block ' + pad(blockIndex + 1) + " of " + pad(steps.length) + "</small>";
+      }
+
+      function blockIndexAtMinutes(totalMins) {
+        let i = 0;
+        for (let s = 0; s < steps.length; s++) {
+          if (totalMins + 1e-9 >= stepStartMinutes(steps[s])) i = s;
+        }
+        return i;
+      }
+
+      function setStep(index, animateHands) {
+        const i = Math.max(0, Math.min(steps.length - 1, index));
+        activeStep = -1;
+        setActiveBlock(i);
+        const mins = stepStartMinutes(steps[i]);
+        if (animateHands === false) {
+          renderClockTime(mins, i);
+        } else {
+          const hour = Math.floor(mins / 60) % 24;
+          const minute = mins % 60;
+          const angs = anglesFor(hour, minute);
+          clockDigital.innerHTML =
+            pad(hour) + ":" + pad(minute) +
+            '<small id="clockDigitalLabel">Block ' + pad(i + 1) + " of " + pad(steps.length) + "</small>";
+          applyHands(angs.hour, angs.minute, true);
+        }
+      }
+
+      /* 60 minute ticks — major every 5 minutes */
+      for (let m = 0; m < 60; m++) {
+        const tick = document.createElement("div");
+        tick.className = "clock__tick" + (m % 5 === 0 ? " clock__tick--major" : "");
+        tick.style.transform = "rotate(" + (m * 6) + "deg)";
+        clockTicks.appendChild(tick);
+      }
+
+      /* Hour numerals 1–12 */
+      for (let h = 1; h <= 12; h++) {
+        const num = document.createElement("span");
+        num.className = "clock__hour-num";
+        num.textContent = String(h);
+        placeOnFace(num, h * 30, 32);
+        clockHours.appendChild(num);
+      }
+
+      /* Minute numerals every 5 minutes: 00, 05, … 55 */
+      for (let m = 0; m < 60; m += 5) {
+        const num = document.createElement("span");
+        num.className = "clock__min-num";
+        num.textContent = pad(m);
+        placeOnFace(num, m * 6, 43);
+        clockMins.appendChild(num);
+      }
+
+      steps.forEach((step, i) => {
+        const hour = Number(step.dataset.hour);
+        const minute = Number(step.dataset.minute);
+        /* Sit on the minute track; nudge 12:xx slightly so they don’t cover 11:xx */
+        const deg = minute * 6 + (hour === 12 ? 3 : 0);
+
+        const marker = document.createElement("div");
+        marker.className = "clock__marker" + (i === 0 ? " is-active" : "");
+        marker.style.transform = "rotate(" + deg + "deg)";
+        marker.innerHTML = "<span></span>";
+        clockMarkers.appendChild(marker);
+
+        const dot = document.createElement("button");
+        dot.type = "button";
+        dot.className = "clock__dot" + (i === 0 ? " is-active" : "");
+        dot.setAttribute("role", "tab");
+        dot.setAttribute("aria-label", "Go to " + step.dataset.range + ": " + step.querySelector("h3").textContent);
+        dot.setAttribute("aria-selected", i === 0 ? "true" : "false");
+        dot.addEventListener("click", () => {
+          if (clockTrigger) {
+            const start = clockTrigger.start;
+            const end = clockTrigger.end;
+            const target = start + (end - start) * progressForBlock(i);
+            if (window.lenisInstance) window.lenisInstance.scrollTo(target, { duration: 1.05 });
+            else window.scrollTo({ top: target, behavior: "smooth" });
+          } else {
+            setStep(i, true);
+          }
+        });
+        clockDots.appendChild(dot);
+      });
+
+      setStep(0, false);
+
+      let clockTrigger = null;
+
+      /* Session runs 11:00 → 12:30 (90 minutes) across the pinned scroll */
+      const sessionStartMins = stepStartMinutes(steps[0]);
+      const sessionEndMins = 12 * 60 + 30;
+
+      function progressToMinutes(progress) {
+        const p = Math.min(1, Math.max(0, progress));
+        return sessionStartMins + p * (sessionEndMins - sessionStartMins);
+      }
+
+      function progressForBlock(index) {
+        const mins = stepStartMinutes(steps[index]);
+        return (mins - sessionStartMins) / (sessionEndMins - sessionStartMins);
+      }
+
+      /* Lenis + GSAP */
+      if (!reduceMotion && window.Lenis && window.gsap && window.ScrollTrigger) {
+        gsap.registerPlugin(ScrollTrigger);
+
+        const lenis = new Lenis({
+          duration: 1.15,
+          easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+          smoothWheel: true,
+        });
+        window.lenisInstance = lenis;
+
+        lenis.on("scroll", ScrollTrigger.update);
+        gsap.ticker.add((time) => lenis.raf(time * 1000));
+        gsap.ticker.lagSmoothing(0);
+
+        /*
+          Hands + digital time scrub continuously with scroll.
+          Right-side block switches only when live time hits each block’s exact start.
+        */
+        function navOffset() {
+          const navEl = document.getElementById("nav");
+          const h = navEl ? navEl.getBoundingClientRect().height : 72;
+          /* Extra gap so the clock never sits under the fixed nav while pinned */
+          return Math.ceil(h + (window.innerWidth <= 900 ? 16 : 8));
+        }
+
+        clockTrigger = ScrollTrigger.create({
+          trigger: "#clockScene",
+          start: () => "top +" + navOffset(),
+          end: () => "+=" + Math.round(window.innerHeight * 1.15 * steps.length),
+          pin: "#clockSticky",
+          pinSpacing: true,
+          scrub: 0.45,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
+          onUpdate: (self) => {
+            const liveMins = progressToMinutes(self.progress);
+            const i = blockIndexAtMinutes(liveMins);
+            renderClockTime(liveMins, i);
+            setActiveBlock(i);
+          },
+          onRefresh: (self) => {
+            const liveMins = progressToMinutes(self.progress);
+            const i = blockIndexAtMinutes(liveMins);
+            activeStep = -1;
+            renderClockTime(liveMins, i);
+            setActiveBlock(i);
+          },
+        });
+
+        /* Soft parallax on side images */
+        document.querySelectorAll(".stakes__visual img, .about__visual img, .agenda-side__img img").forEach((img) => {
+          gsap.fromTo(
+            img,
+            { yPercent: -6 },
+            {
+              yPercent: 6,
+              ease: "none",
+              scrollTrigger: {
+                trigger: img.parentElement,
+                start: "top bottom",
+                end: "bottom top",
+                scrub: true,
+              },
+            }
+          );
+        });
+      } else {
+        document.getElementById("clockScrollHint").textContent = "Use the dots to browse each agenda block";
+      }
+    })();
+  </script>
+</body>
+</html>
