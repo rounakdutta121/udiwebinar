@@ -686,9 +686,46 @@
     }
     .btn--whatsapp:hover { background: #17824b; color: #fff; transform: translateY(-2px); }
 
+    /* ——— Urgency ticker (all devices) ——— */
+    .urgency-bar {
+      position: fixed; left: 0; right: 0; bottom: 0; z-index: 130;
+      height: 42px;
+      display: flex; align-items: center;
+      background: linear-gradient(90deg, #0f6e68 0%, #1f9e96 40%, #2ec4b6 100%);
+      color: #07161d;
+      text-decoration: none;
+      overflow: hidden;
+      border-top: 1px solid rgba(7,22,29,0.12);
+      padding-bottom: env(safe-area-inset-bottom, 0px);
+      min-height: calc(42px + env(safe-area-inset-bottom, 0px));
+      box-shadow: 0 -8px 24px rgba(7,22,29,0.18);
+      transition: filter 0.25s;
+    }
+    .urgency-bar:hover { filter: brightness(1.06); }
+    .urgency-bar:focus-visible { outline: 2px solid #fff; outline-offset: -2px; }
+    .urgency-bar__track {
+      display: flex; align-items: center; gap: 2.75rem;
+      white-space: nowrap;
+      animation: urgency-marquee 26s linear infinite;
+      font-size: 0.8rem; font-weight: 700; letter-spacing: 0.06em;
+      text-transform: uppercase; will-change: transform;
+    }
+    .urgency-bar__track b { font-weight: 800; }
+    .urgency-bar__dot {
+      display: inline-block; width: 6px; height: 6px; border-radius: 50%;
+      background: #07161d; opacity: 0.45; flex: 0 0 auto;
+    }
+    @keyframes urgency-marquee {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+
     /* ——— Fixed contact dock ——— */
     .float-dock {
-      position: fixed; right: 1.1rem; bottom: 1.1rem; z-index: 120;
+      position: fixed;
+      right: max(1.1rem, env(safe-area-inset-right));
+      bottom: calc(42px + env(safe-area-inset-bottom, 0px) + 0.85rem);
+      z-index: 120;
       display: grid; gap: 0.7rem;
     }
     .float-btn {
@@ -702,12 +739,20 @@
     .float-btn:hover { transform: translateY(-3px) scale(1.04); box-shadow: 0 16px 34px rgba(7,22,29,0.34); }
     .float-btn:focus-visible { outline: 2px solid var(--teal-bright); outline-offset: 3px; }
     .float-btn svg { width: 24px; height: 24px; display: block; }
-    .float-btn--call {
-      background: var(--ink); color: var(--teal-bright);
-      border-color: rgba(46,196,182,0.45);
-    }
     .float-btn--wa {
       background: #25d366; color: #fff;
+    }
+    .float-btn--seat {
+      background: var(--ink); color: var(--teal-bright);
+      border-color: rgba(46,196,182,0.5);
+      position: relative;
+    }
+    .float-btn--seat:hover {
+      background: var(--teal-bright); color: var(--ink);
+    }
+    .float-btn--seat span {
+      position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+      overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
     }
     .float-btn--top {
       background: #fff; color: var(--ink);
@@ -754,7 +799,7 @@
 
     /* ——— Footer ——— */
     .footer {
-      background: var(--ink); color: rgba(255,255,255,0.65); padding: 3.5rem 0 2rem;
+      background: var(--ink); color: rgba(255,255,255,0.65); padding: 3.5rem 0 6.5rem;
       font-size: 0.88rem;
     }
     .footer__top {
@@ -862,8 +907,9 @@
       .hero__carousel-label { display: none; }
       .float-dock {
         right: max(0.85rem, env(safe-area-inset-right));
-        bottom: max(0.85rem, env(safe-area-inset-bottom));
+        bottom: calc(42px + env(safe-area-inset-bottom, 0px) + 0.7rem);
       }
+      .urgency-bar__track { font-size: 0.72rem; gap: 2rem; }
     }
 
     /* ——— Responsive: mobile ——— */
@@ -894,7 +940,7 @@
       .theme-cell { min-height: 0; }
       .cta-band { min-height: 320px; }
       .cta-band__content { padding: 3.25rem 0; }
-      .footer { padding: 2.75rem 0 6.5rem; }
+      .footer { padding: 2.75rem 0 7.5rem; }
       .footer__bottom { flex-direction: column; gap: 0.5rem; }
       .float-btn { width: 48px; height: 48px; }
       .float-btn svg { width: 22px; height: 22px; }
@@ -929,6 +975,7 @@
       .hero__slide img { transform: none; transition: none; }
       .hero__slide.is-active img { transform: none; }
       .decoder-ticker__track { animation: none; }
+      .urgency-bar__track { animation: none; }
     }
   </style>
 </head>
@@ -1466,7 +1513,42 @@
     </div>
   </footer>
 
-  <div class="float-dock" aria-label="Quick contact">
+  <a
+    class="urgency-bar"
+    href="https://docs.google.com/forms/d/e/1FAIpQLSfN4K6kqFf1lLyZl0DBZeaGGYwj-rbe20F8WFZU7U3daDmpJw/viewform"
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="Hurry — limited seats. Open free registration form"
+  >
+    <div class="urgency-bar__track">
+      <span><b>Hurry</b> — limited seats remaining</span>
+      <i class="urgency-bar__dot" aria-hidden="true"></i>
+      <span>Free UDI webinar · 28 November</span>
+      <i class="urgency-bar__dot" aria-hidden="true"></i>
+      <span>Claim your seat now →</span>
+      <i class="urgency-bar__dot" aria-hidden="true"></i>
+      <span><b>Hurry</b> — limited seats remaining</span>
+      <i class="urgency-bar__dot" aria-hidden="true"></i>
+      <span>Free UDI webinar · 28 November</span>
+      <i class="urgency-bar__dot" aria-hidden="true"></i>
+      <span>Claim your seat now →</span>
+      <i class="urgency-bar__dot" aria-hidden="true"></i>
+      <span><b>Hurry</b> — limited seats remaining</span>
+      <i class="urgency-bar__dot" aria-hidden="true"></i>
+      <span>Free UDI webinar · 28 November</span>
+      <i class="urgency-bar__dot" aria-hidden="true"></i>
+      <span>Claim your seat now →</span>
+      <i class="urgency-bar__dot" aria-hidden="true"></i>
+      <span><b>Hurry</b> — limited seats remaining</span>
+      <i class="urgency-bar__dot" aria-hidden="true"></i>
+      <span>Free UDI webinar · 28 November</span>
+      <i class="urgency-bar__dot" aria-hidden="true"></i>
+      <span>Claim your seat now →</span>
+      <i class="urgency-bar__dot" aria-hidden="true"></i>
+    </div>
+  </a>
+
+  <div class="float-dock" aria-label="Quick actions">
     <button
       type="button"
       class="float-btn float-btn--top"
@@ -1479,16 +1561,6 @@
       </svg>
     </button>
     <a
-      class="float-btn float-btn--call"
-      href="tel:+919056742784"
-      aria-label="Call +91-9056742784"
-      title="Call +91-9056742784"
-    >
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
-        <path d="M22 16.9v2a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3.1 19.5 19.5 0 01-6-6A19.8 19.8 0 012.1 4.2 2 2 0 014.1 2h2a2 2 0 012 1.7c.1.9.3 1.8.6 2.6a2 2 0 01-.5 2.1L7.1 9.5a16 16 0 006 6l1.1-1.1a2 2 0 012.1-.5c.8.3 1.7.5 2.6.6A2 2 0 0122 16.9z"/>
-      </svg>
-    </a>
-    <a
       class="float-btn float-btn--wa"
       href="https://wa.me/919056742784?text=Hi%20MedDevices%2C%20I%20have%20an%20enquiry%20about%20the%20Understanding%20UDI%20webinar."
       target="_blank"
@@ -1498,6 +1570,22 @@
     >
       <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
         <path d="M20.5 3.5A11 11 0 004.1 17.7L3 21.5l3.9-1A11 11 0 1020.5 3.5zm-8.5 17a9 9 0 01-4.6-1.3l-.3-.2-2.3.6.6-2.2-.2-.3A9 9 0 1120 12a9 9 0 01-8 8.5zm5-6.7c-.3-.1-1.6-.8-1.9-.9s-.4-.1-.6.1-.7.9-.8 1-.3.2-.6.1a7.4 7.4 0 01-3.6-3.1c-.3-.4.3-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.9c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 00-.7.3 2.9 2.9 0 00-.9 2.2 5.1 5.1 0 001.1 2.7 11.6 11.6 0 004.5 4 15 15 0 002.4.8 2.3 2.3 0 001.5-.7 2.7 2.7 0 00.6-1.6c0-.2-.1-.3-.4-.4z"/>
+      </svg>
+    </a>
+    <a
+      class="float-btn float-btn--seat"
+      href="https://docs.google.com/forms/d/e/1FAIpQLSfN4K6kqFf1lLyZl0DBZeaGGYwj-rbe20F8WFZU7U3daDmpJw/viewform"
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="Claim your free seat"
+      title="Claim your free seat"
+    >
+      <span>Claim your free seat</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
+        <path d="M4 8h16v11H4z"/>
+        <path d="M8 8V6.5A2.5 2.5 0 0110.5 4h3A2.5 2.5 0 0116 6.5V8"/>
+        <path d="M4 13h16"/>
+        <path d="M9 16h6"/>
       </svg>
     </a>
   </div>
