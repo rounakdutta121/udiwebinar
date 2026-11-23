@@ -441,138 +441,115 @@
       font-size: 0.9rem; font-weight: 300; max-width: 40rem; margin-inline: auto;
     }
 
-    /* ——— UDI Label Decoder (signature) ——— */
+    /* ——— UDI data ledger (next-gen) ——— */
     .decoder {
       background:
-        radial-gradient(ellipse 80% 60% at 20% 10%, rgba(46,196,182,0.12), transparent 55%),
-        radial-gradient(ellipse 70% 50% at 90% 80%, rgba(15,110,104,0.18), transparent 50%),
-        var(--ink);
+        linear-gradient(180deg, #06131a 0%, #0a1f28 45%, #07161d 100%);
       color: #fff;
       overflow: hidden;
+      position: relative;
     }
-    .decoder .kicker { color: var(--teal-bright); }
-    .decoder .display { color: #fff; }
-    .decoder .lede { color: rgba(255,255,255,0.68); }
-    .decoder-stage {
+    .decoder::before {
+      content: "";
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(46,196,182,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(46,196,182,0.04) 1px, transparent 1px);
+      background-size: 48px 48px;
+      mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 20%, transparent 75%);
+      pointer-events: none;
+    }
+    .decoder .container { position: relative; z-index: 1; }
+    .decoder-head {
       display: grid;
-      grid-template-columns: 1.15fr 0.85fr;
-      gap: clamp(1.75rem, 4vw, 3rem);
-      align-items: stretch;
-      margin-top: 0.5rem;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+      gap: clamp(1.5rem, 4vw, 3.5rem);
+      align-items: end;
+      margin-bottom: clamp(2rem, 4vw, 3rem);
+      padding-bottom: clamp(1.5rem, 3vw, 2rem);
+      border-bottom: 1px solid rgba(255,255,255,0.1);
     }
-    .decoder-label {
-      position: relative;
-      background: linear-gradient(165deg, #f7faf9 0%, #e8f0ee 100%);
-      color: var(--ink);
-      border-radius: 4px;
-      padding: clamp(1.25rem, 3vw, 2rem);
-      box-shadow:
-        0 0 0 1px rgba(255,255,255,0.08),
-        0 40px 80px rgba(0,0,0,0.35);
-      min-height: 420px;
-      overflow: hidden;
+    .decoder-head .kicker { color: var(--teal-bright); justify-content: flex-start; }
+    .decoder-head .display {
+      color: #fff; margin: 0.6rem 0 0; max-width: 14ch;
+      font-size: clamp(2.4rem, 5.5vw, 4.2rem);
     }
-    .decoder-label__stamp {
-      position: absolute; top: 1rem; right: 1rem;
-      font-size: 0.62rem; letter-spacing: 0.16em; text-transform: uppercase;
-      color: var(--muted); font-weight: 600;
+    .decoder-head__aside {
+      color: rgba(255,255,255,0.62); font-weight: 300; font-size: 1rem;
+      line-height: 1.65; max-width: 36ch; padding-bottom: 0.35rem;
     }
-    .decoder-label__brand {
-      font-family: var(--font-display); font-size: 1.1rem; font-weight: 600;
-      margin-bottom: 0.15rem;
+    .decoder-ticker {
+      display: flex; overflow: hidden; gap: 0;
+      border: 1px solid rgba(46,196,182,0.25);
+      background: rgba(46,196,182,0.06);
+      margin-bottom: clamp(1.75rem, 3vw, 2.5rem);
+      mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
     }
-    .decoder-label__device {
-      font-size: 0.82rem; color: var(--muted); margin-bottom: 1.25rem;
-    }
-    .decoder-zone {
-      position: relative;
-      border: 1.5px dashed transparent;
-      border-radius: 3px;
-      padding: 0.55rem 0.65rem;
-      margin: 0.35rem 0;
-      cursor: pointer;
-      transition: border-color 0.3s, background 0.3s, box-shadow 0.3s;
-      text-align: left;
-      background: transparent;
-      color: inherit;
-      width: 100%;
-      font: inherit;
-    }
-    .decoder-zone:hover,
-    .decoder-zone:focus-visible {
-      border-color: rgba(31,158,150,0.45);
-      background: rgba(31,158,150,0.06);
-      outline: none;
-    }
-    .decoder-zone.is-active {
-      border-color: var(--teal);
-      background: rgba(46,196,182,0.12);
-      box-shadow: 0 0 0 3px rgba(46,196,182,0.15);
-    }
-    .decoder-zone__tag {
-      display: inline-block; font-size: 0.58rem; letter-spacing: 0.14em;
-      text-transform: uppercase; font-weight: 700; color: var(--teal-deep);
-      margin-bottom: 0.25rem;
-    }
-    .decoder-zone__code {
+    .decoder-ticker__track {
+      display: flex; gap: 2.5rem; padding: 0.85rem 0;
+      white-space: nowrap;
+      animation: decoder-marquee 32s linear infinite;
       font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
-      font-size: clamp(0.78rem, 1.5vw, 0.92rem); font-weight: 600;
-      letter-spacing: 0.02em; word-break: break-all;
+      font-size: 0.78rem; letter-spacing: 0.06em;
+      color: rgba(46,196,182,0.9);
     }
-    .decoder-zone__sub {
-      font-size: 0.75rem; color: var(--muted); margin-top: 0.2rem; font-weight: 300;
+    .decoder-ticker__track span { opacity: 0.55; }
+    @keyframes decoder-marquee {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
     }
-    .decoder-barcode {
-      display: flex; flex-direction: column; align-items: stretch; gap: 0.35rem;
+    .udi-ledger {
+      display: flex; flex-direction: column; gap: 0;
+      border-top: 1px solid rgba(255,255,255,0.12);
     }
-    .decoder-barcode__bars {
-      display: flex; align-items: stretch; height: 52px; gap: 0;
-      justify-content: center; padding: 0.25rem 0;
+    .udi-row {
+      display: grid;
+      grid-template-columns: 4.5rem minmax(7rem, 11rem) minmax(0, 1.15fr) minmax(0, 1fr);
+      gap: 1.25rem 1.75rem;
+      align-items: start;
+      padding: clamp(1.35rem, 2.8vw, 1.85rem) 0;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      transition: background 0.35s var(--ease);
     }
-    .decoder-barcode__bars i {
-      display: block; height: 100%; background: var(--ink); flex: 0 0 auto;
+    .udi-row:hover {
+      background: linear-gradient(90deg, rgba(46,196,182,0.07), transparent 70%);
     }
-    .decoder-readout {
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.1);
-      padding: clamp(1.5rem, 3vw, 2.25rem);
-      display: flex; flex-direction: column; gap: 1rem;
-      min-height: 100%;
+    .udi-row__idx {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4vw, 2.75rem);
+      font-style: italic; font-weight: 500;
+      color: var(--teal-bright); line-height: 0.9;
+      letter-spacing: -0.03em;
     }
-    .decoder-readout__hint {
-      font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase;
-      color: rgba(255,255,255,0.4); font-weight: 500;
+    .udi-row__key {
+      display: flex; flex-direction: column; gap: 0.45rem; padding-top: 0.35rem;
     }
-    .decoder-readout__title {
-      font-family: var(--font-display); font-size: clamp(1.5rem, 3vw, 2rem);
-      font-weight: 500; line-height: 1.2; letter-spacing: -0.015em;
+    .udi-row__key strong {
+      font-family: var(--font-display);
+      font-size: clamp(1.15rem, 2vw, 1.4rem);
+      font-weight: 500; letter-spacing: -0.02em;
     }
-    .decoder-readout__body {
-      color: rgba(255,255,255,0.68); font-weight: 300; font-size: 0.98rem; line-height: 1.6;
-      flex: 1;
-    }
-    .decoder-readout__chips {
-      display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: auto;
-    }
-    .decoder-chip {
+    .udi-row__badge {
+      display: inline-flex; align-self: flex-start;
+      font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase;
+      font-weight: 600; color: rgba(255,255,255,0.55);
       border: 1px solid rgba(255,255,255,0.18);
-      background: transparent; color: rgba(255,255,255,0.75);
-      padding: 0.45rem 0.75rem; font-size: 0.72rem; letter-spacing: 0.04em;
-      cursor: pointer; transition: background 0.25s, border-color 0.25s, color 0.25s;
-      border-radius: var(--radius);
+      padding: 0.28rem 0.5rem;
     }
-    .decoder-chip:hover, .decoder-chip:focus-visible {
-      border-color: var(--teal-bright); color: #fff; outline: none;
+    .udi-row__code {
+      font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
+      font-size: clamp(0.82rem, 1.6vw, 1.05rem);
+      font-weight: 500; letter-spacing: 0.03em;
+      color: #fff; word-break: break-all;
+      padding: 0.85rem 1rem;
+      background: rgba(0,0,0,0.35);
+      border-left: 3px solid var(--teal-bright);
+      line-height: 1.45;
     }
-    .decoder-chip.is-active {
-      background: var(--teal-bright); color: var(--ink); border-color: var(--teal-bright); font-weight: 600;
+    .udi-row__copy {
+      color: rgba(255,255,255,0.62); font-weight: 300;
+      font-size: 0.95rem; line-height: 1.6; padding-top: 0.25rem;
     }
-    .decoder-pulse {
-      position: absolute; width: 10px; height: 10px; border-radius: 50%;
-      background: var(--teal-bright); pointer-events: none; opacity: 0;
-      box-shadow: 0 0 0 0 rgba(46,196,182,0.5);
-    }
-
     /* ——— Outcomes ——— */
     .outcomes-layout {
       display: grid;
@@ -818,7 +795,7 @@
       .section { padding: clamp(3.5rem, 7vw, 5.5rem) 0; }
       .stakes__grid,
       .about__layout,
-      .decoder-stage,
+      .decoder-head,
       .outcomes-layout,
       .register-paths { grid-template-columns: 1fr; }
       .outcomes-visual {
@@ -828,7 +805,13 @@
       .audience__rail { grid-template-columns: 1fr 1fr; }
       .register-meta { grid-template-columns: 1fr 1fr; }
       .themes-rail { grid-template-columns: 1fr 1fr; }
-      .decoder-label { min-height: 0; }
+      .udi-row {
+        grid-template-columns: 3.25rem 1fr;
+        gap: 0.65rem 1rem;
+      }
+      .udi-row__key { grid-column: 2; }
+      .udi-row__code,
+      .udi-row__copy { grid-column: 1 / -1; }
       .hero__carousel-nav { bottom: 1.25rem; }
       .cta-band__overlay {
         background: linear-gradient(180deg, rgba(7,22,29,0.55) 0%, rgba(7,22,29,0.88) 100%);
@@ -935,6 +918,7 @@
       .hero__eyebrow::before { animation: none; }
       .hero__slide img { transform: none; transition: none; }
       .hero__slide.is-active img { transform: none; }
+      .decoder-ticker__track { animation: none; }
     }
   </style>
 </head>
@@ -951,7 +935,7 @@
         <a href="#why">Why UDI</a>
         <a href="#audience">Who it's for</a>
         <a href="#themes">Themes</a>
-        <a href="#decoder">UDI Decoder</a>
+        <a href="#decoder">UDI data</a>
         <a href="#about">About</a>
         <a class="nav__cta" href="https://docs.google.com/forms/d/e/1FAIpQLSfN4K6kqFf1lLyZl0DBZeaGGYwj-rbe20F8WFZU7U3daDmpJw/viewform" target="_blank" rel="noopener noreferrer">Reserve your seat</a>
       </nav>
@@ -1180,68 +1164,88 @@
       </div>
     </section>
 
-    <!-- SCENE 4b: UDI Label Decoder (signature interactive) -->
+    <!-- SCENE 4b: UDI data ledger -->
     <section class="section decoder" id="decoder">
       <div class="container">
-        <div class="section-head">
-          <p class="kicker reveal">Interactive preview</p>
-          <h2 class="display reveal">Tap the label. Decode the identifier.</h2>
-          <p class="lede reveal">A live specimen of how UDI pieces sit on packaging — the same anatomy we unpack in the webinar.</p>
+        <div class="decoder-head">
+          <div>
+            <p class="kicker reveal">UDI reference</p>
+            <h2 class="display reveal">The data on every compliant label.</h2>
+          </div>
+          <p class="decoder-head__aside reveal">
+            Five building blocks your teams will recognize in the webinar — sample values only, for learning. Not a real device record.
+          </p>
         </div>
 
-        <div class="decoder-stage" id="decoderStage">
-          <div class="decoder-label reveal" id="decoderLabel" aria-label="Interactive sample UDI device label">
-            <span class="decoder-label__stamp">Sample specimen · Not a real device</span>
-            <div class="decoder-label__brand">MedDevices Demo Device</div>
-            <div class="decoder-label__device">Sterile single-use catheter · Class IIa · Qty 1</div>
-
-            <button type="button" class="decoder-zone is-active" data-zone="di" aria-pressed="true">
-              <span class="decoder-zone__tag">UDI-DI</span>
-              <div class="decoder-zone__code">(01) 09506000123457</div>
-              <div class="decoder-zone__sub">Device Identifier — fixed for this device / packaging level</div>
-            </button>
-
-            <button type="button" class="decoder-zone" data-zone="pi" aria-pressed="false">
-              <span class="decoder-zone__tag">UDI-PI</span>
-              <div class="decoder-zone__code">(17) 271231 (10) LOT-88421 (21) SN-00931</div>
-              <div class="decoder-zone__sub">Production Identifier — lot, serial, expiry as applicable</div>
-            </button>
-
-            <button type="button" class="decoder-zone" data-zone="hri" aria-pressed="false">
-              <span class="decoder-zone__tag">Human-readable</span>
-              <div class="decoder-zone__code" style="font-family: var(--font-body); font-weight: 500; letter-spacing: 0;">
-                Exp: 2031-12-31 · Lot: LOT-88421 · S/N: SN-00931
-              </div>
-              <div class="decoder-zone__sub">Plain-language text that must match the coded data</div>
-            </button>
-
-            <button type="button" class="decoder-zone decoder-barcode" data-zone="aidc" aria-pressed="false">
-              <span class="decoder-zone__tag">AIDC / barcode</span>
-              <div class="decoder-barcode__bars" aria-hidden="true" id="decoderBars"></div>
-              <div class="decoder-zone__sub">Machine-readable carrier scanned across the supply chain</div>
-            </button>
-
-            <button type="button" class="decoder-zone" data-zone="basic" aria-pressed="false">
-              <span class="decoder-zone__tag">Basic UDI-DI (EU)</span>
-              <div class="decoder-zone__code">++BASICUDI123456789X</div>
-              <div class="decoder-zone__sub">Device group key used in EU technical documentation &amp; EUDAMED</div>
-            </button>
+        <div class="decoder-ticker" aria-hidden="true">
+          <div class="decoder-ticker__track">
+            <span>(01) UDI-DI</span> (01) 09506000123457
+            <span>(17) EXP</span> 271231
+            <span>(10) LOT</span> LOT-88421
+            <span>(21) S/N</span> SN-00931
+            <span>HRI</span> Exp 2031-12-31
+            <span>AIDC</span> GS1 · HIBCC · ICCBBA
+            <span>BASIC</span> ++BASICUDI123456789X
+            <span>(01) UDI-DI</span> (01) 09506000123457
+            <span>(17) EXP</span> 271231
+            <span>(10) LOT</span> LOT-88421
+            <span>(21) S/N</span> SN-00931
+            <span>HRI</span> Exp 2031-12-31
+            <span>AIDC</span> GS1 · HIBCC · ICCBBA
+            <span>BASIC</span> ++BASICUDI123456789X
           </div>
+        </div>
 
-          <aside class="decoder-readout reveal" aria-live="polite">
-            <p class="decoder-readout__hint" id="decoderHint">Zone 01 of 05</p>
-            <h3 class="decoder-readout__title" id="decoderTitle">UDI-DI — the device’s fixed identity</h3>
-            <p class="decoder-readout__body" id="decoderBody">
-              The Device Identifier stays constant for a given device model and packaging configuration. It is the backbone scanners and databases use to recognize what product they are looking at — before lot or serial details enter the picture.
-            </p>
-            <div class="decoder-readout__chips" role="tablist" aria-label="Label zones">
-              <button type="button" class="decoder-chip is-active" data-zone="di" role="tab" aria-selected="true">UDI-DI</button>
-              <button type="button" class="decoder-chip" data-zone="pi" role="tab" aria-selected="false">UDI-PI</button>
-              <button type="button" class="decoder-chip" data-zone="hri" role="tab" aria-selected="false">HRI</button>
-              <button type="button" class="decoder-chip" data-zone="aidc" role="tab" aria-selected="false">Barcode</button>
-              <button type="button" class="decoder-chip" data-zone="basic" role="tab" aria-selected="false">Basic UDI-DI</button>
+        <div class="udi-ledger" role="list">
+          <article class="udi-row reveal" role="listitem">
+            <div class="udi-row__idx" aria-hidden="true">01</div>
+            <div class="udi-row__key">
+              <strong>UDI-DI</strong>
+              <span class="udi-row__badge">Device Identifier</span>
             </div>
-          </aside>
+            <code class="udi-row__code">(01) 09506000123457</code>
+            <p class="udi-row__copy">Fixed identity for a device model and packaging level. Scanners and databases use this first to know which product they are looking at.</p>
+          </article>
+
+          <article class="udi-row reveal" role="listitem">
+            <div class="udi-row__idx" aria-hidden="true">02</div>
+            <div class="udi-row__key">
+              <strong>UDI-PI</strong>
+              <span class="udi-row__badge">Production Identifier</span>
+            </div>
+            <code class="udi-row__code">(17) 271231 &nbsp; (10) LOT-88421 &nbsp; (21) SN-00931</code>
+            <p class="udi-row__copy">Variable production data — expiry, lot/batch, and serial when required. Fields depend on device type and risk class.</p>
+          </article>
+
+          <article class="udi-row reveal" role="listitem">
+            <div class="udi-row__idx" aria-hidden="true">03</div>
+            <div class="udi-row__key">
+              <strong>HRI</strong>
+              <span class="udi-row__badge">Human-readable</span>
+            </div>
+            <code class="udi-row__code">Exp: 2031-12-31 · Lot: LOT-88421 · S/N: SN-00931</code>
+            <p class="udi-row__copy">Plain-language text that must match the coded UDI so people can verify the same facts if a scanner is unavailable.</p>
+          </article>
+
+          <article class="udi-row reveal" role="listitem">
+            <div class="udi-row__idx" aria-hidden="true">04</div>
+            <div class="udi-row__key">
+              <strong>AIDC</strong>
+              <span class="udi-row__badge">Barcode / 2D</span>
+            </div>
+            <code class="udi-row__code">Machine-readable carrier · GS1 / HIBCC / ICCBBA</code>
+            <p class="udi-row__copy">Automatic Identification and Data Capture encodes the UDI for systems across manufacturing, logistics, and clinical use.</p>
+          </article>
+
+          <article class="udi-row reveal" role="listitem">
+            <div class="udi-row__idx" aria-hidden="true">05</div>
+            <div class="udi-row__key">
+              <strong>Basic UDI-DI</strong>
+              <span class="udi-row__badge">EU device group</span>
+            </div>
+            <code class="udi-row__code">++BASICUDI123456789X</code>
+            <p class="udi-row__copy">EU key for a device group in technical documentation and EUDAMED — not the primary on-pack barcode, but it must stay aligned with the UDI-DI story.</p>
+          </article>
         </div>
       </div>
     </section>
@@ -1432,7 +1436,7 @@
             <li><a href="https://www.meddevices.net/">meddevices.net</a></li>
             <li><a href="https://www.meddevices.net/eareu-service/">EU Authorised Representative</a></li>
             <li><a href="#themes">Session themes</a></li>
-            <li><a href="#decoder">UDI Decoder</a></li>
+            <li><a href="#decoder">UDI data</a></li>
             <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSfN4K6kqFf1lLyZl0DBZeaGGYwj-rbe20F8WFZU7U3daDmpJw/viewform" target="_blank" rel="noopener noreferrer">Register</a></li>
           </ul>
         </div>
@@ -1631,91 +1635,6 @@
         });
       }
 
-      /* ——— UDI Label Decoder ——— */
-      const zoneCopy = {
-        di: {
-          hint: "Zone 01 of 05",
-          title: "UDI-DI — the device’s fixed identity",
-          body: "The Device Identifier stays constant for a given device model and packaging configuration. It is the backbone scanners and databases use to recognize what product they are looking at — before lot or serial details enter the picture.",
-        },
-        pi: {
-          hint: "Zone 02 of 05",
-          title: "UDI-PI — production variables",
-          body: "Production Identifiers carry the changing facts: lot or batch, serial number, manufacturing or expiry date. Which fields appear depends on the device and risk class — mismatch here is a classic labeling failure mode.",
-        },
-        hri: {
-          hint: "Zone 03 of 05",
-          title: "Human-readable information",
-          body: "If a scanner fails, people still need to read the same data. HRI must mirror the coded UDI — same identifiers, same meaning — so warehouses, hospitals, and auditors are not guessing from the barcode alone.",
-        },
-        aidc: {
-          hint: "Zone 04 of 05",
-          title: "AIDC — the machine-readable carrier",
-          body: "Automatic Identification and Data Capture (barcode or 2D symbol) encodes the UDI for systems. Issuing agencies such as GS1, HIBCC, or ICCBBA define how that symbol is structured and verified.",
-        },
-        basic: {
-          hint: "Zone 05 of 05",
-          title: "Basic UDI-DI — the EU device-group key",
-          body: "In the EU, Basic UDI-DI identifies a device group for technical documentation and EUDAMED — it is not printed as the primary on-pack barcode, but it must stay aligned with the UDI-DI story you put on labels.",
-        },
-      };
-
-      const decoderTitle = document.getElementById("decoderTitle");
-      const decoderBody = document.getElementById("decoderBody");
-      const decoderHint = document.getElementById("decoderHint");
-      const zoneButtons = Array.from(document.querySelectorAll(".decoder-zone"));
-      const chipButtons = Array.from(document.querySelectorAll(".decoder-chip"));
-      const barsHost = document.getElementById("decoderBars");
-
-      if (barsHost) {
-        const pattern = [2,1,3,1,1,2,4,1,2,1,3,2,1,1,2,3,1,4,1,2,1,3,1,2,2,1,1,3,2,1,4,1,2,3,1,1,2,1,3,2,1,2,1,4,1,2];
-        pattern.forEach((w, i) => {
-          const bar = document.createElement("i");
-          bar.style.width = w + "px";
-          bar.style.marginRight = (i % 3 === 0 ? 1 : 0) + "px";
-          bar.style.opacity = i % 7 === 0 ? "0" : "1";
-          if (i % 7 === 0) bar.style.background = "transparent";
-          barsHost.appendChild(bar);
-        });
-      }
-
-      function setZone(id) {
-        const copy = zoneCopy[id];
-        if (!copy) return;
-        zoneButtons.forEach((btn) => {
-          const on = btn.dataset.zone === id;
-          btn.classList.toggle("is-active", on);
-          btn.setAttribute("aria-pressed", on ? "true" : "false");
-        });
-        chipButtons.forEach((btn) => {
-          const on = btn.dataset.zone === id;
-          btn.classList.toggle("is-active", on);
-          btn.setAttribute("aria-selected", on ? "true" : "false");
-        });
-        decoderHint.textContent = copy.hint;
-        decoderTitle.textContent = copy.title;
-        decoderBody.textContent = copy.body;
-
-        if (window.gsap && !reduceMotion) {
-          gsap.fromTo(
-            [decoderTitle, decoderBody],
-            { opacity: 0.35, y: 8 },
-            { opacity: 1, y: 0, duration: 0.4, stagger: 0.05, ease: "power2.out", overwrite: true }
-          );
-          const activeZone = zoneButtons.find((b) => b.dataset.zone === id);
-          if (activeZone) {
-            gsap.fromTo(
-              activeZone,
-              { scale: 0.985 },
-              { scale: 1, duration: 0.35, ease: "power2.out", overwrite: true }
-            );
-          }
-        }
-      }
-
-      zoneButtons.forEach((btn) => btn.addEventListener("click", () => setZone(btn.dataset.zone)));
-      chipButtons.forEach((btn) => btn.addEventListener("click", () => setZone(btn.dataset.zone)));
-
       /* Lenis + GSAP */
       if (!reduceMotion && window.Lenis && window.gsap && window.ScrollTrigger) {
         gsap.registerPlugin(ScrollTrigger);
@@ -1748,11 +1667,12 @@
           );
         });
 
-        gsap.from(".decoder-label", {
-          scrollTrigger: { trigger: "#decoder", start: "top 75%" },
-          y: 36,
+        gsap.from(".udi-row", {
+          scrollTrigger: { trigger: "#decoder", start: "top 70%" },
+          y: 28,
           opacity: 0,
-          duration: 0.9,
+          duration: 0.65,
+          stagger: 0.08,
           ease: "power3.out",
         });
       }
