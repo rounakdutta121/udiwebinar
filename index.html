@@ -363,10 +363,6 @@
     .section-head .kicker { justify-content: center; }
     .section-head .display { margin-inline: auto; }
     .section-head .lede { margin-inline: auto; }
-    .section-head .agenda__hint {
-      margin: 0.85rem auto 0; text-align: center; max-width: 34rem;
-    }
-
     /* ——— Stakes ——— */
     .stakes__grid {
       display: grid; grid-template-columns: 1.05fr 0.95fr; gap: clamp(2rem, 5vw, 4rem);
@@ -413,206 +409,169 @@
       font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.45);
     }
 
-    /* ——— Agenda clock ——— */
-    .agenda__intro { margin-bottom: 2.5rem; }
-    .agenda__hint { font-size: 0.92rem; color: var(--muted); font-weight: 300; }
+    /* ——— Session themes ——— */
+    .themes-rail {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 1px;
+      background: var(--line-dark);
+      border: 1px solid var(--line-dark);
+      margin-top: 0.5rem;
+    }
+    .theme-cell {
+      background: #fff;
+      padding: clamp(1.35rem, 2.5vw, 1.85rem) clamp(1.1rem, 2vw, 1.5rem);
+      display: flex; flex-direction: column; gap: 0.85rem; min-height: 220px;
+      transition: background 0.35s var(--ease), transform 0.35s var(--ease);
+    }
+    .theme-cell:hover { background: var(--mist); }
+    .theme-cell__idx {
+      font-family: var(--font-display); font-style: italic; font-size: 1.35rem;
+      color: var(--teal); line-height: 1;
+    }
+    .theme-cell h3 {
+      font-family: var(--font-display); font-size: clamp(1.15rem, 1.8vw, 1.35rem);
+      font-weight: 500; line-height: 1.25; letter-spacing: -0.015em;
+    }
+    .theme-cell p {
+      color: var(--muted); font-size: 0.9rem; font-weight: 300; line-height: 1.55; margin-top: auto;
+    }
+    .themes-note {
+      margin-top: 1.75rem; text-align: center; color: var(--muted);
+      font-size: 0.9rem; font-weight: 300; max-width: 40rem; margin-inline: auto;
+    }
 
-    .clock-scene {
-      position: relative;
-      width: 100vw;
-      margin-left: calc(50% - 50vw);
-      margin-right: calc(50% - 50vw);
-    }
-    .clock-scene__sticky {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      box-sizing: border-box;
-      width: 100%;
-      height: 100svh;
-      min-height: 100svh;
-      padding: calc(5.75rem + env(safe-area-inset-top, 0px)) 1.25rem 2.5rem;
-    }
-    .clock-layout {
-      display: grid; grid-template-columns: minmax(260px, 400px) minmax(280px, 1fr);
-      gap: clamp(1.5rem, 4vw, 3.5rem); align-items: center;
-      width: min(100%, var(--max));
-      margin-inline: auto;
-    }
-
-    .clock-stage { display: flex; flex-direction: column; align-items: center; gap: 1.25rem; }
-    .clock {
-      position: relative; width: min(100%, 360px); aspect-ratio: 1;
-      border-radius: 50%;
+    /* ——— UDI Label Decoder (signature) ——— */
+    .decoder {
       background:
-        radial-gradient(circle at 50% 50%, #123844 0%, var(--navy) 62%, #06141b 100%);
-      border: 1px solid rgba(46, 196, 182, 0.35);
-      box-shadow:
-        0 0 0 10px rgba(7, 22, 29, 0.06),
-        0 30px 60px rgba(7, 22, 29, 0.18),
-        inset 0 0 40px rgba(46, 196, 182, 0.08);
-    }
-    .clock__ring {
-      position: absolute; inset: 18%; border-radius: 50%;
-      border: 1px dashed rgba(46, 196, 182, 0.18); pointer-events: none; z-index: 1;
-    }
-    .clock__ticks { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
-    .clock__tick {
-      position: absolute; left: 50%; top: 50%; width: 2px; height: 50%;
-      transform-origin: center bottom; margin-left: -1px; margin-top: -50%;
-    }
-    .clock__tick::after {
-      content: ""; position: absolute; top: 4.5%; left: 50%; width: 1.5px; height: 5px;
-      transform: translateX(-50%); background: rgba(255,255,255,0.28); border-radius: 1px;
-    }
-    .clock__tick--major::after {
-      height: 10px; width: 2.5px; top: 3.8%; background: rgba(46,196,182,0.85);
-    }
-
-    .clock__hours, .clock__mins {
-      position: absolute; inset: 0; z-index: 2; pointer-events: none;
-    }
-    .clock__hour-num, .clock__min-num {
-      position: absolute; left: 50%; top: 50%;
-      transform: translate(-50%, -50%);
-      font-variant-numeric: tabular-nums; line-height: 1; text-align: center;
-    }
-    .clock__hour-num {
-      font-family: var(--font-display); font-size: clamp(0.95rem, 2.8vw, 1.2rem);
-      font-weight: 500; color: rgba(255,255,255,0.92); width: 1.4em;
-    }
-    .clock__min-num {
-      font-family: var(--font-body); font-size: clamp(0.48rem, 1.5vw, 0.58rem);
-      font-weight: 500; letter-spacing: 0.02em; color: rgba(46,196,182,0.9);
-      width: 1.6em;
-    }
-
-    .clock__markers { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
-    .clock__marker {
-      position: absolute; left: 50%; top: 50%; width: 10px; height: 50%;
-      transform-origin: center bottom; margin-left: -5px; margin-top: -50%;
-    }
-    .clock__marker span {
-      position: absolute; top: 1.5%; left: 50%; width: 8px; height: 8px;
-      transform: translateX(-50%); border-radius: 50%;
-      background: rgba(255,255,255,0.2); border: 1.5px solid rgba(46,196,182,0.7);
-      transition: background 0.35s, box-shadow 0.35s, transform 0.35s;
-    }
-    .clock__marker.is-active span {
-      background: var(--teal-bright); border-color: #fff;
-      box-shadow: 0 0 0 4px rgba(46,196,182,0.25); transform: translateX(-50%) scale(1.2);
-    }
-
-    .clock__hand {
-      position: absolute; left: 50%; bottom: 50%; transform-origin: center bottom;
-      border-radius: 999px; will-change: transform; transform: rotate(0deg); z-index: 4;
-    }
-    .clock__hand--hour {
-      width: 5px; height: 24%; margin-left: -2.5px;
-      background: linear-gradient(to top, #fff, var(--teal-bright));
-    }
-    .clock__hand--minute {
-      width: 3px; height: 34%; margin-left: -1.5px;
-      background: linear-gradient(to top, rgba(255,255,255,0.55), #fff);
-    }
-    .clock__center {
-      position: absolute; left: 50%; top: 50%; width: 14px; height: 14px;
-      margin: -7px 0 0 -7px; border-radius: 50%; background: var(--teal-bright);
-      box-shadow: 0 0 0 4px rgba(7,22,29,0.85); z-index: 5;
-    }
-    .clock__label {
-      position: absolute; left: 50%; top: 58%; transform: translate(-50%, -50%);
-      font-size: 0.58rem; letter-spacing: 0.18em; text-transform: uppercase;
-      color: rgba(255,255,255,0.4); font-weight: 500; z-index: 2;
-    }
-
-    .clock__digital {
-      font-family: var(--font-display); font-size: clamp(2rem, 4vw, 2.6rem);
-      font-variant-numeric: tabular-nums; color: var(--ink); letter-spacing: -0.02em;
-      line-height: 1;
-    }
-    .clock__digital small {
-      display: block; margin-top: 0.35rem; font-family: var(--font-body);
-      font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase;
-      color: var(--muted); font-weight: 500;
-    }
-    .clock__dots {
-      display: flex; gap: 0.45rem; flex-wrap: wrap; justify-content: center;
-    }
-    .clock__dot {
-      width: 8px; height: 8px; border-radius: 50%; border: none; padding: 0;
-      background: rgba(7,22,29,0.15); cursor: pointer; transition: background 0.3s, transform 0.3s;
-    }
-    .clock__dot.is-active { background: var(--teal); transform: scale(1.35); }
-    .clock__dot:focus-visible { outline: 2px solid var(--teal); outline-offset: 3px; }
-
-    .clock-panel {
-      position: relative; min-height: 0;
-      width: 100%; max-width: 100%; box-sizing: border-box;
-      background: #fff; border: 1px solid var(--line-dark);
-      padding: clamp(1.5rem, 3vw, 2.35rem);
-      box-shadow: 0 20px 50px rgba(7,22,29,0.06);
+        radial-gradient(ellipse 80% 60% at 20% 10%, rgba(46,196,182,0.12), transparent 55%),
+        radial-gradient(ellipse 70% 50% at 90% 80%, rgba(15,110,104,0.18), transparent 50%),
+        var(--ink);
+      color: #fff;
       overflow: hidden;
     }
-    .clock-panel__step {
-      position: absolute; left: 0; right: 0; top: 0;
-      padding: clamp(1.5rem, 3vw, 2.35rem);
-      box-sizing: border-box; width: 100%;
-      opacity: 0; visibility: hidden; pointer-events: none;
-      transform: translateY(14px);
-      transition: opacity 0.45s var(--ease), transform 0.45s var(--ease), visibility 0.45s;
-      display: flex; flex-direction: column; justify-content: flex-start; gap: 0.85rem;
+    .decoder .kicker { color: var(--teal-bright); }
+    .decoder .display { color: #fff; }
+    .decoder .lede { color: rgba(255,255,255,0.68); }
+    .decoder-stage {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: clamp(1.75rem, 4vw, 3rem);
+      align-items: stretch;
+      margin-top: 0.5rem;
     }
-    .clock-panel__step.is-active {
-      position: relative; opacity: 1; visibility: visible; pointer-events: auto; transform: none;
+    .decoder-label {
+      position: relative;
+      background: linear-gradient(165deg, #f7faf9 0%, #e8f0ee 100%);
+      color: var(--ink);
+      border-radius: 4px;
+      padding: clamp(1.25rem, 3vw, 2rem);
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,0.08),
+        0 40px 80px rgba(0,0,0,0.35);
+      min-height: 420px;
+      overflow: hidden;
     }
-    .clock-panel__meta {
-      display: flex; flex-wrap: wrap; align-items: center; gap: 0.65rem 1rem;
+    .decoder-label__stamp {
+      position: absolute; top: 1rem; right: 1rem;
+      font-size: 0.62rem; letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--muted); font-weight: 600;
     }
-    .clock-panel__index {
-      font-size: 0.72rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
-      color: var(--teal-deep);
+    .decoder-label__brand {
+      font-family: var(--font-display); font-size: 1.1rem; font-weight: 600;
+      margin-bottom: 0.15rem;
     }
-    .clock-panel__range {
-      font-family: var(--font-display); font-size: 1rem; color: var(--slate);
-      font-variant-numeric: tabular-nums;
+    .decoder-label__device {
+      font-size: 0.82rem; color: var(--muted); margin-bottom: 1.25rem;
     }
-    .clock-panel__step h3 {
-      font-family: var(--font-display); font-size: clamp(1.35rem, 2.6vw, 1.85rem);
-      font-weight: 500; line-height: 1.25; letter-spacing: -0.015em; max-width: 20ch;
-      overflow-wrap: anywhere; word-break: break-word;
+    .decoder-zone {
+      position: relative;
+      border: 1.5px dashed transparent;
+      border-radius: 3px;
+      padding: 0.55rem 0.65rem;
+      margin: 0.35rem 0;
+      cursor: pointer;
+      transition: border-color 0.3s, background 0.3s, box-shadow 0.3s;
+      text-align: left;
+      background: transparent;
+      color: inherit;
+      width: 100%;
+      font: inherit;
     }
-    .clock-panel__step ul { display: grid; gap: 0.5rem; margin: 0; padding: 0; }
-    .clock-panel__step li {
-      position: relative; padding-left: 1rem; color: var(--muted);
-      font-size: 0.95rem; font-weight: 300; line-height: 1.55;
-      overflow-wrap: anywhere; word-break: break-word;
+    .decoder-zone:hover,
+    .decoder-zone:focus-visible {
+      border-color: rgba(31,158,150,0.45);
+      background: rgba(31,158,150,0.06);
+      outline: none;
     }
-    .clock-panel__step li::before {
-      content: ""; position: absolute; left: 0; top: 0.65em; width: 6px; height: 1px; background: var(--teal);
+    .decoder-zone.is-active {
+      border-color: var(--teal);
+      background: rgba(46,196,182,0.12);
+      box-shadow: 0 0 0 3px rgba(46,196,182,0.15);
     }
-    .clock-scroll-hint {
-      margin-top: 1.25rem; margin-bottom: 0.25rem; padding: 0.75rem 1rem;
-      text-align: center; font-size: 0.72rem; letter-spacing: 0.12em;
-      text-transform: uppercase; color: var(--muted); width: 100%; box-sizing: border-box;
+    .decoder-zone__tag {
+      display: inline-block; font-size: 0.58rem; letter-spacing: 0.14em;
+      text-transform: uppercase; font-weight: 700; color: var(--teal-deep);
+      margin-bottom: 0.25rem;
     }
-
-    .agenda-side {
-      display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 1.5rem; margin-top: 3.5rem; align-items: stretch;
+    .decoder-zone__code {
+      font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
+      font-size: clamp(0.78rem, 1.5vw, 0.92rem); font-weight: 600;
+      letter-spacing: 0.02em; word-break: break-all;
     }
-    .agenda-side__img {
-      overflow: hidden; border-radius: var(--radius); min-height: 280px; background: var(--slate);
+    .decoder-zone__sub {
+      font-size: 0.75rem; color: var(--muted); margin-top: 0.2rem; font-weight: 300;
     }
-    .agenda-side__img img { width: 100%; height: 100%; object-fit: cover; }
-    .agenda-side__panel {
-      background: var(--ink); color: #fff; padding: clamp(1.75rem, 4vw, 2.5rem);
-      display: flex; flex-direction: column; justify-content: center; gap: 1rem;
+    .decoder-barcode {
+      display: flex; flex-direction: column; align-items: stretch; gap: 0.35rem;
     }
-    .agenda-side__panel h3 {
-      font-family: var(--font-display); font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 500; line-height: 1.2;
+    .decoder-barcode__bars {
+      display: flex; align-items: stretch; height: 52px; gap: 0;
+      justify-content: center; padding: 0.25rem 0;
     }
-    .agenda-side__panel p { color: rgba(255,255,255,0.68); font-weight: 300; }
+    .decoder-barcode__bars i {
+      display: block; height: 100%; background: var(--ink); flex: 0 0 auto;
+    }
+    .decoder-readout {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      padding: clamp(1.5rem, 3vw, 2.25rem);
+      display: flex; flex-direction: column; gap: 1rem;
+      min-height: 100%;
+    }
+    .decoder-readout__hint {
+      font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase;
+      color: rgba(255,255,255,0.4); font-weight: 500;
+    }
+    .decoder-readout__title {
+      font-family: var(--font-display); font-size: clamp(1.5rem, 3vw, 2rem);
+      font-weight: 500; line-height: 1.2; letter-spacing: -0.015em;
+    }
+    .decoder-readout__body {
+      color: rgba(255,255,255,0.68); font-weight: 300; font-size: 0.98rem; line-height: 1.6;
+      flex: 1;
+    }
+    .decoder-readout__chips {
+      display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: auto;
+    }
+    .decoder-chip {
+      border: 1px solid rgba(255,255,255,0.18);
+      background: transparent; color: rgba(255,255,255,0.75);
+      padding: 0.45rem 0.75rem; font-size: 0.72rem; letter-spacing: 0.04em;
+      cursor: pointer; transition: background 0.25s, border-color 0.25s, color 0.25s;
+      border-radius: var(--radius);
+    }
+    .decoder-chip:hover, .decoder-chip:focus-visible {
+      border-color: var(--teal-bright); color: #fff; outline: none;
+    }
+    .decoder-chip.is-active {
+      background: var(--teal-bright); color: var(--ink); border-color: var(--teal-bright); font-weight: 600;
+    }
+    .decoder-pulse {
+      position: absolute; width: 10px; height: 10px; border-radius: 50%;
+      background: var(--teal-bright); pointer-events: none; opacity: 0;
+      box-shadow: 0 0 0 0 rgba(46,196,182,0.5);
+    }
 
     /* ——— Outcomes ——— */
     .outcomes-layout {
@@ -843,12 +802,11 @@
     @media (min-width: 1400px) {
       :root { --max: 1280px; }
       .hero h1 { font-size: clamp(3.2rem, 4.5vw, 5.6rem); }
-      .clock { width: min(100%, 400px); }
     }
 
     /* ——— Responsive: laptop ——— */
     @media (max-width: 1200px) {
-      .clock-layout { grid-template-columns: minmax(240px, 340px) 1fr; gap: 1.5rem; }
+      .themes-rail { grid-template-columns: repeat(3, 1fr); }
       .audience__rail { grid-template-columns: repeat(3, 1fr); }
       .register-meta { max-width: 100%; }
       .nav__links { gap: 1.15rem; }
@@ -860,7 +818,7 @@
       .section { padding: clamp(3.5rem, 7vw, 5.5rem) 0; }
       .stakes__grid,
       .about__layout,
-      .agenda-side,
+      .decoder-stage,
       .outcomes-layout,
       .register-paths { grid-template-columns: 1fr; }
       .outcomes-visual {
@@ -869,19 +827,8 @@
       .about__visual { min-height: 300px; aspect-ratio: 16 / 10; height: auto; }
       .audience__rail { grid-template-columns: 1fr 1fr; }
       .register-meta { grid-template-columns: 1fr 1fr; }
-      .clock-layout {
-        grid-template-columns: 1fr; justify-items: stretch; width: min(100% - 0.5rem, var(--max));
-      }
-      .clock-scene {
-        width: 100%; margin-left: 0; margin-right: 0;
-      }
-      .clock-scene__sticky {
-        height: auto; min-height: 0;
-        padding: calc(4.75rem + env(safe-area-inset-top, 0px)) 1rem 2rem;
-      }
-      .clock-stage { width: 100%; padding-top: 0.75rem; padding-bottom: 0.75rem; }
-      .clock { width: min(100%, 300px); }
-      .clock-panel { width: 100%; max-width: 100%; }
+      .themes-rail { grid-template-columns: 1fr 1fr; }
+      .decoder-label { min-height: 0; }
       .hero__carousel-nav { bottom: 1.25rem; }
       .cta-band__overlay {
         background: linear-gradient(180deg, rgba(7,22,29,0.55) 0%, rgba(7,22,29,0.88) 100%);
@@ -950,30 +897,8 @@
         left: 1rem; right: auto; bottom: 1rem;
         max-width: calc(100% - 5.5rem);
       }
-      .clock-scene__sticky {
-        min-height: auto; height: auto;
-        padding: calc(5rem + env(safe-area-inset-top, 0px)) 0.75rem 2.5rem;
-      }
-      .clock-stage { gap: 0.85rem; padding: 0.5rem 0 0.65rem; }
-      .clock { width: min(92vw, 250px); }
-      .clock__digital { font-size: 1.75rem; padding-top: 0.25rem; }
-      .clock__hour-num { font-size: 0.85rem; }
-      .clock__min-num { font-size: 0.45rem; }
-      .clock-panel {
-        padding: 1.35rem 1.15rem 1.5rem;
-        margin-inline: 0;
-      }
-      .clock-panel__step {
-        padding: 1.35rem 1.15rem 1.5rem;
-        gap: 0.75rem;
-      }
-      .clock-panel__step h3 { max-width: none; font-size: 1.2rem; }
-      .clock-panel__step li { font-size: 0.9rem; }
-      .clock-scroll-hint {
-        margin-top: 1rem; margin-bottom: 0.5rem; padding: 0.85rem 0.75rem 1rem;
-        line-height: 1.4;
-      }
-      .agenda-side { margin-top: 2rem; }
+      .themes-rail { grid-template-columns: 1fr; }
+      .theme-cell { min-height: 0; }
       .cta-band { min-height: 320px; }
       .cta-band__content { padding: 3.25rem 0; }
       .footer { padding: 2.75rem 0 6.5rem; }
@@ -997,7 +922,6 @@
     @media (max-height: 500px) and (orientation: landscape) {
       .hero { min-height: auto; }
       .hero__content { padding: 5rem 0 3rem; }
-      .clock-scene__sticky { min-height: auto; height: auto; }
       .float-dock { gap: 0.45rem; }
       .float-btn { width: 42px; height: 42px; }
     }
@@ -1026,7 +950,8 @@
       <nav class="nav__links" id="navLinks" aria-label="Primary">
         <a href="#why">Why UDI</a>
         <a href="#audience">Who it's for</a>
-        <a href="#agenda">Agenda</a>
+        <a href="#themes">Themes</a>
+        <a href="#decoder">UDI Decoder</a>
         <a href="#about">About</a>
         <a class="nav__cta" href="https://docs.google.com/forms/d/e/1FAIpQLSfN4K6kqFf1lLyZl0DBZeaGGYwj-rbe20F8WFZU7U3daDmpJw/viewform" target="_blank" rel="noopener noreferrer">Reserve your seat</a>
       </nav>
@@ -1215,136 +1140,108 @@
       </div>
     </section>
 
-    <!-- SCENE 4: Agenda -->
-    <section class="section section--fog" id="agenda">
+    <!-- SCENE 4: Session themes (public overview) -->
+    <section class="section section--fog" id="themes">
       <div class="container">
-        <div class="section-head agenda__intro">
-          <p class="kicker reveal">Webinar flow</p>
-          <h2 class="display reveal">90 minutes. Seven clear stages. From welcome to live Q&amp;A.</h2>
-          <p class="agenda__hint reveal">Scroll the session clock — hour and minute hands move with each block of the agenda.</p>
+        <div class="section-head">
+          <p class="kicker reveal">What the session covers</p>
+          <h2 class="display reveal">Five themes. One practical path from barcode to market-ready records.</h2>
+          <p class="lede reveal">A high-level view of the territory we map together — without minute-by-minute spoilers. Come for clarity; leave with language your team can use.</p>
         </div>
 
-        <div class="clock-scene" id="clockScene">
-          <div class="clock-scene__sticky" id="clockSticky">
-            <div class="clock-layout">
-              <div class="clock-stage">
-                <div class="clock" id="sessionClock" role="img" aria-label="Session clock showing the current webinar block time">
-                  <div class="clock__ring" aria-hidden="true"></div>
-                  <div class="clock__ticks" id="clockTicks" aria-hidden="true"></div>
-                  <div class="clock__mins" id="clockMins" aria-hidden="true"></div>
-                  <div class="clock__hours" id="clockHours" aria-hidden="true"></div>
-                  <div class="clock__markers" id="clockMarkers" aria-hidden="true"></div>
-                  <div class="clock__label">Session</div>
-                  <div class="clock__hand clock__hand--hour" id="hourHand"></div>
-                  <div class="clock__hand clock__hand--minute" id="minuteHand"></div>
-                  <div class="clock__center" aria-hidden="true"></div>
-                </div>
-                <div class="clock__digital" id="clockDigital" aria-live="polite">
-                  11:00
-                  <small id="clockDigitalLabel">Block 01 of 07</small>
-                </div>
-                <div class="clock__dots" id="clockDots" role="tablist" aria-label="Agenda blocks"></div>
-              </div>
+        <div class="themes-rail" role="list">
+          <article class="theme-cell reveal" role="listitem">
+            <span class="theme-cell__idx" aria-hidden="true">01</span>
+            <h3>UDI fundamentals</h3>
+            <p>What Unique Device Identification is, why it exists, and how DI / PI fit the device lifecycle.</p>
+          </article>
+          <article class="theme-cell reveal" role="listitem">
+            <span class="theme-cell__idx" aria-hidden="true">02</span>
+            <h3>EU MDR &amp; IVDR map</h3>
+            <p>Who is responsible, which issuing agencies matter, and how obligations show up before you ship.</p>
+          </article>
+          <article class="theme-cell reveal" role="listitem">
+            <span class="theme-cell__idx" aria-hidden="true">03</span>
+            <h3>Coding &amp; labeling</h3>
+            <p>Human-readable vs machine-readable data, Basic UDI-DI, and reading a real label with confidence.</p>
+          </article>
+          <article class="theme-cell reveal" role="listitem">
+            <span class="theme-cell__idx" aria-hidden="true">04</span>
+            <h3>EUDAMED alignment</h3>
+            <p>How label data should connect to device registration so records stay consistent and audit-ready.</p>
+          </article>
+          <article class="theme-cell reveal" role="listitem">
+            <span class="theme-cell__idx" aria-hidden="true">05</span>
+            <h3>Pitfalls &amp; live Q&amp;A</h3>
+            <p>Frequent mistakes teams make — then space to pressure-test your own questions with the host.</p>
+          </article>
+        </div>
+        <p class="themes-note reveal">90 minutes · LinkedIn + Zoom · Free to attend · 28 November 2026</p>
+      </div>
+    </section>
 
-              <div class="clock-panel" id="clockPanel">
-                <article class="clock-panel__step is-active" data-step="0" data-hour="11" data-minute="0" data-range="11:00–11:10">
-                  <div class="clock-panel__meta">
-                    <span class="clock-panel__index">Block 01</span>
-                    <span class="clock-panel__range">11:00–11:10</span>
-                  </div>
-                  <h3>Welcome, introduction &amp; company overview</h3>
-                  <ul>
-                    <li>Meet the host and MedDevices Lifesciences — services, expertise, and objectives</li>
-                    <li>Webinar scope and learning outcomes</li>
-                    <li>Live audience poll: roles, UDI familiarity, and target markets</li>
-                  </ul>
-                </article>
-                <article class="clock-panel__step" data-step="1" data-hour="11" data-minute="10" data-range="11:10–11:25">
-                  <div class="clock-panel__meta">
-                    <span class="clock-panel__index">Block 02</span>
-                    <span class="clock-panel__range">11:10–11:25</span>
-                  </div>
-                  <h3>UDI fundamentals: understanding the basics</h3>
-                  <ul>
-                    <li>What Unique Device Identification is — and why it matters</li>
-                    <li>Role of UDI in identification, traceability, and patient safety</li>
-                    <li>UDI-DI vs UDI-PI, and the UDI lifecycle for manufacturers</li>
-                  </ul>
-                </article>
-                <article class="clock-panel__step" data-step="2" data-hour="11" data-minute="25" data-range="11:25–11:35">
-                  <div class="clock-panel__meta">
-                    <span class="clock-panel__index">Block 03</span>
-                    <span class="clock-panel__range">11:25–11:35</span>
-                  </div>
-                  <h3>UDI regulatory landscape — EU MDR &amp; IVDR</h3>
-                  <ul>
-                    <li>EU UDI framework under MDR and IVDR</li>
-                    <li>Manufacturer and economic operator responsibilities</li>
-                    <li>Issuing entities, applicability, exemptions, and compliance milestones</li>
-                  </ul>
-                </article>
-                <article class="clock-panel__step" data-step="3" data-hour="11" data-minute="35" data-range="11:35–12:00">
-                  <div class="clock-panel__meta">
-                    <span class="clock-panel__index">Block 04</span>
-                    <span class="clock-panel__range">11:35–12:00</span>
-                  </div>
-                  <h3>UDI structure, coding systems &amp; labeling</h3>
-                  <ul>
-                    <li>UDI-DI, UDI-PI, and Basic UDI-DI in the EU context</li>
-                    <li>Human-readable vs machine-readable information</li>
-                    <li>GS1, HIBCC, and ICCBBA identification systems</li>
-                    <li>Label and packaging-level requirements with a practical label walkthrough</li>
-                  </ul>
-                </article>
-                <article class="clock-panel__step" data-step="4" data-hour="12" data-minute="0" data-range="12:00–12:10">
-                  <div class="clock-panel__meta">
-                    <span class="clock-panel__index">Block 05</span>
-                    <span class="clock-panel__range">12:00–12:10</span>
-                  </div>
-                  <h3>EUDAMED &amp; UDI / device registration</h3>
-                  <ul>
-                    <li>EUDAMED UDI/Device registration module overview</li>
-                    <li>Relationship between Basic UDI-DI, UDI-DI, and device records</li>
-                    <li>Keeping labels, records, and regulatory documentation aligned</li>
-                  </ul>
-                </article>
-                <article class="clock-panel__step" data-step="5" data-hour="12" data-minute="10" data-range="12:10–12:20">
-                  <div class="clock-panel__meta">
-                    <span class="clock-panel__index">Block 06</span>
-                    <span class="clock-panel__range">12:10–12:20</span>
-                  </div>
-                  <h3>Common mistakes &amp; best practices</h3>
-                  <ul>
-                    <li>Frequent UDI compliance pitfalls</li>
-                    <li>Cross-functional coordination, documentation, and audit readiness</li>
-                  </ul>
-                </article>
-                <article class="clock-panel__step" data-step="6" data-hour="12" data-minute="20" data-range="12:20–12:30">
-                  <div class="clock-panel__meta">
-                    <span class="clock-panel__index">Block 07</span>
-                    <span class="clock-panel__range">12:20–12:30</span>
-                  </div>
-                  <h3>Live Q&amp;A, feedback &amp; closing</h3>
-                  <ul>
-                    <li>Implementation questions answered live</li>
-                    <li>Key takeaways, free resource, and feedback survey</li>
-                  </ul>
-                </article>
+    <!-- SCENE 4b: UDI Label Decoder (signature interactive) -->
+    <section class="section decoder" id="decoder">
+      <div class="container">
+        <div class="section-head">
+          <p class="kicker reveal">Interactive preview</p>
+          <h2 class="display reveal">Tap the label. Decode the identifier.</h2>
+          <p class="lede reveal">A live specimen of how UDI pieces sit on packaging — the same anatomy we unpack in the webinar.</p>
+        </div>
+
+        <div class="decoder-stage" id="decoderStage">
+          <div class="decoder-label reveal" id="decoderLabel" aria-label="Interactive sample UDI device label">
+            <span class="decoder-label__stamp">Sample specimen · Not a real device</span>
+            <div class="decoder-label__brand">MedDevices Demo Device</div>
+            <div class="decoder-label__device">Sterile single-use catheter · Class IIa · Qty 1</div>
+
+            <button type="button" class="decoder-zone is-active" data-zone="di" aria-pressed="true">
+              <span class="decoder-zone__tag">UDI-DI</span>
+              <div class="decoder-zone__code">(01) 09506000123457</div>
+              <div class="decoder-zone__sub">Device Identifier — fixed for this device / packaging level</div>
+            </button>
+
+            <button type="button" class="decoder-zone" data-zone="pi" aria-pressed="false">
+              <span class="decoder-zone__tag">UDI-PI</span>
+              <div class="decoder-zone__code">(17) 271231 (10) LOT-88421 (21) SN-00931</div>
+              <div class="decoder-zone__sub">Production Identifier — lot, serial, expiry as applicable</div>
+            </button>
+
+            <button type="button" class="decoder-zone" data-zone="hri" aria-pressed="false">
+              <span class="decoder-zone__tag">Human-readable</span>
+              <div class="decoder-zone__code" style="font-family: var(--font-body); font-weight: 500; letter-spacing: 0;">
+                Exp: 2031-12-31 · Lot: LOT-88421 · S/N: SN-00931
               </div>
+              <div class="decoder-zone__sub">Plain-language text that must match the coded data</div>
+            </button>
+
+            <button type="button" class="decoder-zone decoder-barcode" data-zone="aidc" aria-pressed="false">
+              <span class="decoder-zone__tag">AIDC / barcode</span>
+              <div class="decoder-barcode__bars" aria-hidden="true" id="decoderBars"></div>
+              <div class="decoder-zone__sub">Machine-readable carrier scanned across the supply chain</div>
+            </button>
+
+            <button type="button" class="decoder-zone" data-zone="basic" aria-pressed="false">
+              <span class="decoder-zone__tag">Basic UDI-DI (EU)</span>
+              <div class="decoder-zone__code">++BASICUDI123456789X</div>
+              <div class="decoder-zone__sub">Device group key used in EU technical documentation &amp; EUDAMED</div>
+            </button>
+          </div>
+
+          <aside class="decoder-readout reveal" aria-live="polite">
+            <p class="decoder-readout__hint" id="decoderHint">Zone 01 of 05</p>
+            <h3 class="decoder-readout__title" id="decoderTitle">UDI-DI — the device’s fixed identity</h3>
+            <p class="decoder-readout__body" id="decoderBody">
+              The Device Identifier stays constant for a given device model and packaging configuration. It is the backbone scanners and databases use to recognize what product they are looking at — before lot or serial details enter the picture.
+            </p>
+            <div class="decoder-readout__chips" role="tablist" aria-label="Label zones">
+              <button type="button" class="decoder-chip is-active" data-zone="di" role="tab" aria-selected="true">UDI-DI</button>
+              <button type="button" class="decoder-chip" data-zone="pi" role="tab" aria-selected="false">UDI-PI</button>
+              <button type="button" class="decoder-chip" data-zone="hri" role="tab" aria-selected="false">HRI</button>
+              <button type="button" class="decoder-chip" data-zone="aidc" role="tab" aria-selected="false">Barcode</button>
+              <button type="button" class="decoder-chip" data-zone="basic" role="tab" aria-selected="false">Basic UDI-DI</button>
             </div>
-            <p class="clock-scroll-hint" id="clockScrollHint">Scroll to advance the session clock</p>
-          </div>
-        </div>
-
-        <div class="agenda-side">
-          <figure class="agenda-side__img reveal">
-            <img src="public/images/eudamed-network.jpg" alt="Abstract visualization of EUDAMED and regulatory data pathways" loading="lazy" />
-          </figure>
-          <div class="agenda-side__panel reveal">
-            <p class="kicker" style="color: var(--teal-bright);">Signature focus</p>
-            <h3>From barcode confusion to labeling confidence — in one sitting.</h3>
-            <p>We’ll walk a practical label example, flag common issues, and show how UDI data should flow into EUDAMED without costly rework.</p>
-          </div>
+          </aside>
         </div>
       </div>
     </section>
@@ -1534,7 +1431,8 @@
           <ul>
             <li><a href="https://www.meddevices.net/">meddevices.net</a></li>
             <li><a href="https://www.meddevices.net/eareu-service/">EU Authorised Representative</a></li>
-            <li><a href="#agenda">Webinar agenda</a></li>
+            <li><a href="#themes">Session themes</a></li>
+            <li><a href="#decoder">UDI Decoder</a></li>
             <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSfN4K6kqFf1lLyZl0DBZeaGGYwj-rbe20F8WFZU7U3daDmpJw/viewform" target="_blank" rel="noopener noreferrer">Register</a></li>
           </ul>
         </div>
@@ -1733,195 +1631,90 @@
         });
       }
 
-      /* ——— Session clock ——— */
-      const steps = Array.from(document.querySelectorAll(".clock-panel__step"));
-      const hourHand = document.getElementById("hourHand");
-      const minuteHand = document.getElementById("minuteHand");
-      const clockDigital = document.getElementById("clockDigital");
-      const clockTicks = document.getElementById("clockTicks");
-      const clockHours = document.getElementById("clockHours");
-      const clockMins = document.getElementById("clockMins");
-      const clockMarkers = document.getElementById("clockMarkers");
-      const clockDots = document.getElementById("clockDots");
+      /* ——— UDI Label Decoder ——— */
+      const zoneCopy = {
+        di: {
+          hint: "Zone 01 of 05",
+          title: "UDI-DI — the device’s fixed identity",
+          body: "The Device Identifier stays constant for a given device model and packaging configuration. It is the backbone scanners and databases use to recognize what product they are looking at — before lot or serial details enter the picture.",
+        },
+        pi: {
+          hint: "Zone 02 of 05",
+          title: "UDI-PI — production variables",
+          body: "Production Identifiers carry the changing facts: lot or batch, serial number, manufacturing or expiry date. Which fields appear depends on the device and risk class — mismatch here is a classic labeling failure mode.",
+        },
+        hri: {
+          hint: "Zone 03 of 05",
+          title: "Human-readable information",
+          body: "If a scanner fails, people still need to read the same data. HRI must mirror the coded UDI — same identifiers, same meaning — so warehouses, hospitals, and auditors are not guessing from the barcode alone.",
+        },
+        aidc: {
+          hint: "Zone 04 of 05",
+          title: "AIDC — the machine-readable carrier",
+          body: "Automatic Identification and Data Capture (barcode or 2D symbol) encodes the UDI for systems. Issuing agencies such as GS1, HIBCC, or ICCBBA define how that symbol is structured and verified.",
+        },
+        basic: {
+          hint: "Zone 05 of 05",
+          title: "Basic UDI-DI — the EU device-group key",
+          body: "In the EU, Basic UDI-DI identifies a device group for technical documentation and EUDAMED — it is not printed as the primary on-pack barcode, but it must stay aligned with the UDI-DI story you put on labels.",
+        },
+      };
 
-      function placeOnFace(el, angleDeg, radiusPct) {
-        const rad = ((angleDeg - 90) * Math.PI) / 180;
-        const x = 50 + Math.cos(rad) * radiusPct;
-        const y = 50 + Math.sin(rad) * radiusPct;
-        el.style.left = x + "%";
-        el.style.top = y + "%";
-      }
-      let activeStep = 0;
-      let handState = { hour: 0, minute: 0 };
+      const decoderTitle = document.getElementById("decoderTitle");
+      const decoderBody = document.getElementById("decoderBody");
+      const decoderHint = document.getElementById("decoderHint");
+      const zoneButtons = Array.from(document.querySelectorAll(".decoder-zone"));
+      const chipButtons = Array.from(document.querySelectorAll(".decoder-chip"));
+      const barsHost = document.getElementById("decoderBars");
 
-      function pad(n) { return String(n).padStart(2, "0"); }
-
-      function anglesFor(hour, minute) {
-        return {
-          hour: ((hour % 12) * 30) + (minute * 0.5),
-          minute: minute * 6,
-        };
-      }
-
-      function shortestSpin(from, to) {
-        let delta = ((to - from + 540) % 360) - 180;
-        return from + delta;
-      }
-
-      function applyHands(hourDeg, minuteDeg, animate) {
-        const nextHour = shortestSpin(handState.hour, hourDeg);
-        const nextMinute = shortestSpin(handState.minute, minuteDeg);
-        handState = { hour: nextHour, minute: nextMinute };
-
-        if (animate && window.gsap && !reduceMotion) {
-          gsap.to(hourHand, { rotation: nextHour, duration: 0.55, ease: "power2.out", overwrite: true });
-          gsap.to(minuteHand, { rotation: nextMinute, duration: 0.55, ease: "power2.out", overwrite: true });
-        } else {
-          hourHand.style.transform = "rotate(" + nextHour + "deg)";
-          minuteHand.style.transform = "rotate(" + nextMinute + "deg)";
-        }
-      }
-
-      function stepStartMinutes(step) {
-        return Number(step.dataset.hour) * 60 + Number(step.dataset.minute);
-      }
-
-      /* Right-side block + markers only — does not move hands */
-      function setActiveBlock(index) {
-        const i = Math.max(0, Math.min(steps.length - 1, index));
-        if (i === activeStep) return;
-        activeStep = i;
-        steps.forEach((el, idx) => el.classList.toggle("is-active", idx === i));
-        clockMarkers.querySelectorAll(".clock__marker").forEach((el, idx) => {
-          el.classList.toggle("is-active", idx === i);
+      if (barsHost) {
+        const pattern = [2,1,3,1,1,2,4,1,2,1,3,2,1,1,2,3,1,4,1,2,1,3,1,2,2,1,1,3,2,1,4,1,2,3,1,1,2,1,3,2,1,2,1,4,1,2];
+        pattern.forEach((w, i) => {
+          const bar = document.createElement("i");
+          bar.style.width = w + "px";
+          bar.style.marginRight = (i % 3 === 0 ? 1 : 0) + "px";
+          bar.style.opacity = i % 7 === 0 ? "0" : "1";
+          if (i % 7 === 0) bar.style.background = "transparent";
+          barsHost.appendChild(bar);
         });
-        clockDots.querySelectorAll(".clock__dot").forEach((el, idx) => {
-          el.classList.toggle("is-active", idx === i);
-          el.setAttribute("aria-selected", idx === i ? "true" : "false");
+      }
+
+      function setZone(id) {
+        const copy = zoneCopy[id];
+        if (!copy) return;
+        zoneButtons.forEach((btn) => {
+          const on = btn.dataset.zone === id;
+          btn.classList.toggle("is-active", on);
+          btn.setAttribute("aria-pressed", on ? "true" : "false");
         });
-        if (window.ScrollTrigger) {
-          window.requestAnimationFrame(function () {
-            ScrollTrigger.refresh();
-          });
-        }
-      }
+        chipButtons.forEach((btn) => {
+          const on = btn.dataset.zone === id;
+          btn.classList.toggle("is-active", on);
+          btn.setAttribute("aria-selected", on ? "true" : "false");
+        });
+        decoderHint.textContent = copy.hint;
+        decoderTitle.textContent = copy.title;
+        decoderBody.textContent = copy.body;
 
-      function renderClockTime(totalMins, blockIndex) {
-        const hour = Math.floor(totalMins / 60) % 24;
-        const minute = Math.floor(totalMins % 60);
-        const hourDeg = (totalMins % (12 * 60)) * 0.5;
-        const minuteDeg = (totalMins % 60) * 6;
-
-        hourHand.style.transform = "rotate(" + hourDeg + "deg)";
-        minuteHand.style.transform = "rotate(" + minuteDeg + "deg)";
-        handState = { hour: hourDeg, minute: minuteDeg };
-
-        clockDigital.innerHTML =
-          pad(hour) + ":" + pad(minute) +
-          '<small id="clockDigitalLabel">Block ' + pad(blockIndex + 1) + " of " + pad(steps.length) + "</small>";
-      }
-
-      function blockIndexAtMinutes(totalMins) {
-        let i = 0;
-        for (let s = 0; s < steps.length; s++) {
-          if (totalMins + 1e-9 >= stepStartMinutes(steps[s])) i = s;
-        }
-        return i;
-      }
-
-      function setStep(index, animateHands) {
-        const i = Math.max(0, Math.min(steps.length - 1, index));
-        activeStep = -1;
-        setActiveBlock(i);
-        const mins = stepStartMinutes(steps[i]);
-        if (animateHands === false) {
-          renderClockTime(mins, i);
-        } else {
-          const hour = Math.floor(mins / 60) % 24;
-          const minute = mins % 60;
-          const angs = anglesFor(hour, minute);
-          clockDigital.innerHTML =
-            pad(hour) + ":" + pad(minute) +
-            '<small id="clockDigitalLabel">Block ' + pad(i + 1) + " of " + pad(steps.length) + "</small>";
-          applyHands(angs.hour, angs.minute, true);
-        }
-      }
-
-      /* 60 minute ticks — major every 5 minutes */
-      for (let m = 0; m < 60; m++) {
-        const tick = document.createElement("div");
-        tick.className = "clock__tick" + (m % 5 === 0 ? " clock__tick--major" : "");
-        tick.style.transform = "rotate(" + (m * 6) + "deg)";
-        clockTicks.appendChild(tick);
-      }
-
-      /* Hour numerals 1–12 */
-      for (let h = 1; h <= 12; h++) {
-        const num = document.createElement("span");
-        num.className = "clock__hour-num";
-        num.textContent = String(h);
-        placeOnFace(num, h * 30, 32);
-        clockHours.appendChild(num);
-      }
-
-      /* Minute numerals every 5 minutes: 00, 05, … 55 */
-      for (let m = 0; m < 60; m += 5) {
-        const num = document.createElement("span");
-        num.className = "clock__min-num";
-        num.textContent = pad(m);
-        placeOnFace(num, m * 6, 43);
-        clockMins.appendChild(num);
-      }
-
-      steps.forEach((step, i) => {
-        const hour = Number(step.dataset.hour);
-        const minute = Number(step.dataset.minute);
-        /* Sit on the minute track; nudge 12:xx slightly so they don’t cover 11:xx */
-        const deg = minute * 6 + (hour === 12 ? 3 : 0);
-
-        const marker = document.createElement("div");
-        marker.className = "clock__marker" + (i === 0 ? " is-active" : "");
-        marker.style.transform = "rotate(" + deg + "deg)";
-        marker.innerHTML = "<span></span>";
-        clockMarkers.appendChild(marker);
-
-        const dot = document.createElement("button");
-        dot.type = "button";
-        dot.className = "clock__dot" + (i === 0 ? " is-active" : "");
-        dot.setAttribute("role", "tab");
-        dot.setAttribute("aria-label", "Go to " + step.dataset.range + ": " + step.querySelector("h3").textContent);
-        dot.setAttribute("aria-selected", i === 0 ? "true" : "false");
-        dot.addEventListener("click", () => {
-          if (clockTrigger) {
-            const start = clockTrigger.start;
-            const end = clockTrigger.end;
-            const target = start + (end - start) * progressForBlock(i);
-            if (window.lenisInstance) window.lenisInstance.scrollTo(target, { duration: 1.05 });
-            else window.scrollTo({ top: target, behavior: "smooth" });
-          } else {
-            setStep(i, true);
+        if (window.gsap && !reduceMotion) {
+          gsap.fromTo(
+            [decoderTitle, decoderBody],
+            { opacity: 0.35, y: 8 },
+            { opacity: 1, y: 0, duration: 0.4, stagger: 0.05, ease: "power2.out", overwrite: true }
+          );
+          const activeZone = zoneButtons.find((b) => b.dataset.zone === id);
+          if (activeZone) {
+            gsap.fromTo(
+              activeZone,
+              { scale: 0.985 },
+              { scale: 1, duration: 0.35, ease: "power2.out", overwrite: true }
+            );
           }
-        });
-        clockDots.appendChild(dot);
-      });
-
-      setStep(0, false);
-
-      let clockTrigger = null;
-
-      /* Session runs 11:00 → 12:30 (90 minutes) across the pinned scroll */
-      const sessionStartMins = stepStartMinutes(steps[0]);
-      const sessionEndMins = 12 * 60 + 30;
-
-      function progressToMinutes(progress) {
-        const p = Math.min(1, Math.max(0, progress));
-        return sessionStartMins + p * (sessionEndMins - sessionStartMins);
+        }
       }
 
-      function progressForBlock(index) {
-        const mins = stepStartMinutes(steps[index]);
-        return (mins - sessionStartMins) / (sessionEndMins - sessionStartMins);
-      }
+      zoneButtons.forEach((btn) => btn.addEventListener("click", () => setZone(btn.dataset.zone)));
+      chipButtons.forEach((btn) => btn.addEventListener("click", () => setZone(btn.dataset.zone)));
 
       /* Lenis + GSAP */
       if (!reduceMotion && window.Lenis && window.gsap && window.ScrollTrigger) {
@@ -1938,43 +1731,7 @@
         gsap.ticker.add((time) => lenis.raf(time * 1000));
         gsap.ticker.lagSmoothing(0);
 
-        /*
-          Hands + digital time scrub continuously with scroll.
-          Right-side block switches only when live time hits each block’s exact start.
-        */
-        function navOffset() {
-          const navEl = document.getElementById("nav");
-          const h = navEl ? navEl.getBoundingClientRect().height : 72;
-          /* Extra gap so the clock never sits under the fixed nav while pinned */
-          return Math.ceil(h + (window.innerWidth <= 900 ? 16 : 8));
-        }
-
-        clockTrigger = ScrollTrigger.create({
-          trigger: "#clockScene",
-          start: () => "top +" + navOffset(),
-          end: () => "+=" + Math.round(window.innerHeight * 1.15 * steps.length),
-          pin: "#clockSticky",
-          pinSpacing: true,
-          scrub: 0.45,
-          anticipatePin: 1,
-          invalidateOnRefresh: true,
-          onUpdate: (self) => {
-            const liveMins = progressToMinutes(self.progress);
-            const i = blockIndexAtMinutes(liveMins);
-            renderClockTime(liveMins, i);
-            setActiveBlock(i);
-          },
-          onRefresh: (self) => {
-            const liveMins = progressToMinutes(self.progress);
-            const i = blockIndexAtMinutes(liveMins);
-            activeStep = -1;
-            renderClockTime(liveMins, i);
-            setActiveBlock(i);
-          },
-        });
-
-        /* Soft parallax on side images */
-        document.querySelectorAll(".stakes__visual img, .about__visual img, .agenda-side__img img").forEach((img) => {
+        document.querySelectorAll(".stakes__visual img, .about__visual img").forEach((img) => {
           gsap.fromTo(
             img,
             { yPercent: -6 },
@@ -1990,8 +1747,14 @@
             }
           );
         });
-      } else {
-        document.getElementById("clockScrollHint").textContent = "Use the dots to browse each agenda block";
+
+        gsap.from(".decoder-label", {
+          scrollTrigger: { trigger: "#decoder", start: "top 75%" },
+          y: 36,
+          opacity: 0,
+          duration: 0.9,
+          ease: "power3.out",
+        });
       }
     })();
   </script>
