@@ -499,20 +499,27 @@
       to { transform: translateX(-50%); }
     }
     .udi-ledger {
+      position: relative;
+      z-index: 2;
       display: flex; flex-direction: column; gap: 0;
       border-top: 1px solid rgba(255,255,255,0.12);
+      opacity: 1;
+      visibility: visible;
     }
     .udi-row {
       display: grid;
       grid-template-columns: 4.5rem minmax(7rem, 11rem) minmax(0, 1.15fr) minmax(0, 1fr);
       gap: 1.25rem 1.75rem;
       align-items: start;
-      padding: clamp(1.35rem, 2.8vw, 1.85rem) 0;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
+      padding: clamp(1.35rem, 2.8vw, 1.85rem) 0.25rem;
+      border-bottom: 1px solid rgba(255,255,255,0.14);
+      opacity: 1;
+      visibility: visible;
+      transform: none;
       transition: background 0.35s var(--ease);
     }
     .udi-row:hover {
-      background: linear-gradient(90deg, rgba(46,196,182,0.07), transparent 70%);
+      background: linear-gradient(90deg, rgba(46,196,182,0.1), transparent 70%);
     }
     .udi-row__idx {
       font-family: var(--font-display);
@@ -528,28 +535,31 @@
       font-family: var(--font-display);
       font-size: clamp(1.15rem, 2vw, 1.4rem);
       font-weight: 500; letter-spacing: -0.02em;
+      color: #fff;
     }
     .udi-row__badge {
       display: inline-flex; align-self: flex-start;
       font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase;
-      font-weight: 600; color: rgba(255,255,255,0.55);
-      border: 1px solid rgba(255,255,255,0.18);
+      font-weight: 600; color: rgba(255,255,255,0.7);
+      border: 1px solid rgba(255,255,255,0.22);
       padding: 0.28rem 0.5rem;
     }
     .udi-row__code {
+      display: block;
       font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
-      font-size: clamp(0.82rem, 1.6vw, 1.05rem);
-      font-weight: 500; letter-spacing: 0.03em;
-      color: #fff; word-break: break-all;
-      padding: 0.85rem 1rem;
-      background: rgba(0,0,0,0.35);
+      font-size: clamp(0.88rem, 1.7vw, 1.1rem);
+      font-weight: 600; letter-spacing: 0.03em;
+      color: #07161d; word-break: break-all;
+      padding: 0.95rem 1.1rem;
+      background: #e8f6f4;
       border-left: 3px solid var(--teal-bright);
       line-height: 1.45;
     }
     .udi-row__copy {
-      color: rgba(255,255,255,0.62); font-weight: 300;
+      color: rgba(255,255,255,0.78); font-weight: 300;
       font-size: 0.95rem; line-height: 1.6; padding-top: 0.25rem;
     }
+
     /* ——— Outcomes ——— */
     .outcomes-layout {
       display: grid;
@@ -1197,7 +1207,7 @@
         </div>
 
         <div class="udi-ledger" role="list">
-          <article class="udi-row reveal" role="listitem">
+          <article class="udi-row" role="listitem">
             <div class="udi-row__idx" aria-hidden="true">01</div>
             <div class="udi-row__key">
               <strong>UDI-DI</strong>
@@ -1207,7 +1217,7 @@
             <p class="udi-row__copy">Fixed identity for a device model and packaging level. Scanners and databases use this first to know which product they are looking at.</p>
           </article>
 
-          <article class="udi-row reveal" role="listitem">
+          <article class="udi-row" role="listitem">
             <div class="udi-row__idx" aria-hidden="true">02</div>
             <div class="udi-row__key">
               <strong>UDI-PI</strong>
@@ -1217,7 +1227,7 @@
             <p class="udi-row__copy">Variable production data — expiry, lot/batch, and serial when required. Fields depend on device type and risk class.</p>
           </article>
 
-          <article class="udi-row reveal" role="listitem">
+          <article class="udi-row" role="listitem">
             <div class="udi-row__idx" aria-hidden="true">03</div>
             <div class="udi-row__key">
               <strong>HRI</strong>
@@ -1227,7 +1237,7 @@
             <p class="udi-row__copy">Plain-language text that must match the coded UDI so people can verify the same facts if a scanner is unavailable.</p>
           </article>
 
-          <article class="udi-row reveal" role="listitem">
+          <article class="udi-row" role="listitem">
             <div class="udi-row__idx" aria-hidden="true">04</div>
             <div class="udi-row__key">
               <strong>AIDC</strong>
@@ -1237,7 +1247,7 @@
             <p class="udi-row__copy">Automatic Identification and Data Capture encodes the UDI for systems across manufacturing, logistics, and clinical use.</p>
           </article>
 
-          <article class="udi-row reveal" role="listitem">
+          <article class="udi-row" role="listitem">
             <div class="udi-row__idx" aria-hidden="true">05</div>
             <div class="udi-row__key">
               <strong>Basic UDI-DI</strong>
@@ -1667,14 +1677,6 @@
           );
         });
 
-        gsap.from(".udi-row", {
-          scrollTrigger: { trigger: "#decoder", start: "top 70%" },
-          y: 28,
-          opacity: 0,
-          duration: 0.65,
-          stagger: 0.08,
-          ease: "power3.out",
-        });
       }
     })();
   </script>
